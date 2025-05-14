@@ -134,6 +134,25 @@ require("lazy").setup({
               "lua",
               "vim",
               "vimdoc",
+              -- AÑADIENDO PARSERS PARA LOS NUEVOS LENGUAJES
+              "html",
+              "css",
+              "javascript", -- Ya estaba implícito por ts_ls, pero explícito es mejor
+              "typescript", -- Ya estaba implícito por ts_ls
+              "tsx",        -- Ya estaba implícito por ts_ls
+              "json",
+              "yaml",
+              "dockerfile",
+              "bash",
+              "go",
+              "rust",
+              "python",     -- Ya lo tenías implícito por pyright
+              "php",
+              "c_sharp",    -- Para C# (dotnet)
+              "java",
+              "kotlin",
+              "swift",
+              "sql",
             },
             highlight = { enable = true },
             indent = { enable = true },
@@ -189,6 +208,9 @@ require("lazy").setup({
       end,
     },
 
+    --------------------------------------------------------------------------
+    -- TU CONFIGURACIÓN ORIGINAL DE LSP (NO LA TOCO) -------------------------
+    --------------------------------------------------------------------------
     -- Plugin 8: Integración con LSP (nvim-lspconfig)
     {
       "neovim/nvim-lspconfig",
@@ -223,65 +245,57 @@ require("lazy").setup({
       end,
     },
 
+    --------------------------------------------------------------------------
+    -- TU CONFIGURACIÓN ORIGINAL DE CMP (NO LA TOCO) -------------------------
+    --------------------------------------------------------------------------
      -- Autocompletion engine
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      -- LSP source for nvim-cmp
-      "hrsh7th/cmp-nvim-lsp",
+    {
+      "hrsh7th/nvim-cmp",
+      dependencies = {
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
+        "L3MON4D3/LuaSnip",
+        "saadparwaiz1/cmp_luasnip",
+      },
+      config = function()
+        local cmp = require("cmp")
+        local luasnip = require("luasnip")
 
-      -- Buffer completions
-      "hrsh7th/cmp-buffer",
+        cmp.setup({
+          snippet = {
+            expand = function(args)
+              luasnip.lsp_expand(args.body)
+            end,
+          },
+          mapping = cmp.mapping.preset.insert({
+            ["<Tab>"] = cmp.mapping.select_next_item(),
+            ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+            ["<CR>"] = cmp.mapping.confirm({ select = true }),
+            ["<C-Space>"] = cmp.mapping.complete(),
+          }),
+          sources = cmp.config.sources({
+            { name = "nvim_lsp" },
+            { name = "luasnip" },
+          }, {
+            { name = "buffer" },
+            { name = "path" },
+          }),
+        })
 
-      -- Path completions
-      "hrsh7th/cmp-path",
+        -- Required for correct capabilities
+        local capabilities_original_cmp = require("cmp_nvim_lsp").default_capabilities() -- Renombrada para evitar conflicto
 
-      -- Command-line completions
-      "hrsh7th/cmp-cmdline",
-
-      -- Snippet engine
-      "L3MON4D3/LuaSnip",
-
-      -- Snippet completions
-      "saadparwaiz1/cmp_luasnip",
+        -- Override default LSP capabilities (include this in your lspconfig setup)
+        require("lspconfig").ts_ls.setup({ -- Esto podría estar reconfigurando ts_ls
+          capabilities = capabilities_original_cmp,
+          cmd = { "typescript-language-server", "--stdio" },
+          root_dir = require("lspconfig").util.root_pattern("package.json", "tsconfig.json", ".git"),
+          filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "tsx" },
+        })
+      end,
     },
-    config = function()
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
-
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<Tab>"] = cmp.mapping.select_next_item(),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<C-Space>"] = cmp.mapping.complete(),
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-        }, {
-          { name = "buffer" },
-          { name = "path" },
-        }),
-      })
-
-      -- Required for correct capabilities
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-      -- Override default LSP capabilities (include this in your lspconfig setup)
-      require("lspconfig").ts_ls.setup({
-        capabilities = capabilities,
-        cmd = { "typescript-language-server", "--stdio" },
-        root_dir = require("lspconfig").util.root_pattern("package.json", "tsconfig.json", ".git"),
-        filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "tsx" },
-      })
-    end,
-  },
 
 
        -- Plugin 9: Integración con Git (gitsigns) - Configuración MÍNIMA
@@ -302,31 +316,89 @@ require("lazy").setup({
         },
       },
 
-      -- -- Plugin 10: Guías de indentación
-{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = function()
-  -- Define los highlights antes de configurar el plugin
-  vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#444444" }) -- Color gris oscuro para las guías
-  vim.api.nvim_set_hl(0, "IndentBlanklineContextChar", { fg = "#FF5555" }) -- Color rojo para el bloque actual
-  return {
-    indent = {
-      char = "│", -- Usa un carácter más estilizado
-      highlight = "IndentBlanklineChar", -- Resalta las guías con un color
-    },
-    scope = {
-      enabled = true, -- Habilita el resaltado del bloque actual
-      show_start = true, -- Muestra una línea al inicio del bloque
-      show_end = true, -- Muestra una línea al final del bloque
-      highlight = "IndentBlanklineContextChar", -- Color diferente para el bloque actual
-    },
-    exclude = {
-      filetypes = { "help", "NvimTree", "markdown" }, -- No mostrar en estos tipos de archivo
-    },
-  }
-end },
-
     {
       'nvim-lua/plenary.nvim',
       lazy = true,
     },
-  },
-})
+
+    ------------------------------------------------------------------------------------
+    -- NUEVOS PLUGINS: MASON Y MASON-LSPCONFIG PARA GESTIONAR LSPS ADICIONALES --------
+    ------------------------------------------------------------------------------------
+    {
+      "williamboman/mason.nvim",
+      cmd = "Mason", -- Para carga diferida hasta que se llame a :Mason
+      config = function()
+        require("mason").setup({
+          ui = {
+            border = "rounded",
+            icons = {
+              package_installed = "✓",
+              package_pending = "➜",
+              package_uninstalled = "✗"
+            }
+          }
+        })
+      end,
+    },
+
+    {
+      "williamboman/mason-lspconfig.nvim",
+      dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
+      -- Cargar después de mason y lspconfig
+      -- event = { "BufReadPre", "BufNewFile" }, -- Opcional, para cargar cuando se abre un archivo
+      config = function()
+        -- Es CRUCIAL que la variable 'capabilities_for_mason' sea la correcta para nvim-cmp.
+        -- Idealmente, se define UNA SOLA VEZ de forma global o se pasa consistentemente.
+        -- Aquí, la definimos de nuevo. Esto podría ser un punto a refinar.
+        local capabilities_for_mason = require("cmp_nvim_lsp").default_capabilities()
+
+        require("mason-lspconfig").setup({
+          ensure_installed = {
+            -- Tus LSPs existentes que quieres que Mason gestione (ts_ls y pyright ya están arriba)
+            -- "lua_ls", -- lua_ls ya lo tienes arriba, no lo dupliques aquí a menos que quieras que Mason lo gestione
+
+            -- NUEVOS LSPs que pediste:
+            "html",         -- Servidor: html (vscode-html-language-server)
+            "cssls",        -- Servidor: cssls (vscode-css-language-server)
+            "jsonls",       -- Servidor: jsonls (vscode-json-language-server)
+            "yamlls",       -- Servidor: yamlls (yaml-language-server)
+            "dockerls",     -- Servidor: dockerls (dockerfile-language-server-nodejs)
+            "bashls",       -- Servidor: bashls (bash-language-server)
+
+            -- 10 más que considero útiles (elige los que necesites):
+            "rust_analyzer",-- Rust
+            "intelephense", -- PHP (necesita 'npm i -g intelephense' o licencia para todo) o phpactor
+            "marksman",     -- Markdown (alternativa/complemento a tu previewer)
+            "tailwindcss",  -- Tailwind CSS
+            "eslint",       -- Linter/formateador para JS/TS (puede configurarse como LSP)
+            "sqlls",        -- SQL Language Server
+            "jdtls",        -- Java (requiere configuración más compleja y JDK)
+            -- "kotlin_language_server", -- Kotlin
+            -- "sourcekit_lsp",         -- Swift (requiere Xcode en macOS)
+          },
+          handlers = {
+            -- Configuración por defecto para cada servidor instalado por Mason
+            function(server_name)
+              require("lspconfig")[server_name].setup({
+                capabilities = capabilities_for_mason, -- Usa las capabilities definidas aquí
+              })
+            end,
+
+            -- Puedes añadir handlers personalizados si un servidor necesita configuración especial
+            -- Ejemplo: si 'lua_ls' fuera gestionado por Mason y necesitara settings especiales:
+            -- ["lua_ls"] = function()
+            --   require("lspconfig").lua_ls.setup({
+            --     capabilities = capabilities_for_mason,
+            --     settings = { Lua = { diagnostics = { globals = {"vim"} } } }
+            --   })
+            -- end,
+          }
+        })
+      end,
+    },
+    ------------------------------------------------------------------------------------
+    -- FIN DE NUEVOS PLUGINS -----------------------------------------------------------
+    ------------------------------------------------------------------------------------
+
+  }, -- Fin de la tabla spec
+}) -- Fin de lazy.setup
