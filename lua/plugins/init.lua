@@ -469,5 +469,45 @@ end
     })
   end,
 },
+ -- Plugin 18
+ {
+  "HiPhish/rainbow-delimiters.nvim",
+  config = function()
+    local rainbow_delimiters = require("rainbow-delimiters")
+    require("rainbow-delimiters.setup").setup({
+      strategy = {
+        [''] = rainbow_delimiters.strategy["global"],
+      },
+      query = {
+        [""] = "rainbow-delimiters",
+        lua = "rainbow-blocks",
+      },
+      highlight = {
+        "RainbowDelimiterRed",
+        "RainbowDelimiterYellow",
+        "RainbowDelimiterBlue",
+        "RainbowDelimiterOrange",
+        "RainbowDelimiterGreen",
+        "RainbowDelimiterViolet",
+        "RainbowDelimiterCyan",
+      },
+    })
+  end,
+},
+  -- Plugin 19 Twilight
+  -- Atenúa el código fuera del bloque actual
+  {
+    "folke/twilight.nvim",
+    config = function()
+      require("twilight").setup({
+        dimming = {
+          alpha = 0.80, -- Nivel de atenuación (0 a 1)
+          inactive = true, -- Atenúa bloques inactivos
+        },
+        context = 10, -- Líneas visibles alrededor del cursor
+        treesitter = true, -- Usa Treesitter para mejor precisión
+      })
+    end,
+  },
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup
