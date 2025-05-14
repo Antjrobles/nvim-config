@@ -14,6 +14,8 @@ vim.opt.incsearch = true -- Resalta coincidencias mientras se escribe
 vim.opt.hlsearch = true -- Resalta todas las coincidencias de búsqueda
 vim.opt.splitbelow = true -- Abre nuevas ventanas en la parte inferior
 
+
+
 vim.filetype.add({ extension = { md = "markdown" } })
 
 vim.opt.cursorline = true   -- Resalta la línea donde está el cursor
@@ -31,11 +33,6 @@ vim.opt.listchars = {
 vim.opt.smoothscroll = true -- (Neovim 0.9+) Intenta hacer el scroll más suave.
 
 -- >>> SECCIÓN DEL CURSOR CORREGIDA Y MEJORADA <<<
-
--- 1. Definir la forma y el parpadeo del cursor
---   n-v-c: Normal, Visual, Comando -> bloque, usa grupo 'Cursor'
---   i-ci: Inserción, Inserción en línea de cmd -> barra vertical 25%, usa grupo 'Cursor' (para consistencia, o crea 'InsertCursorHighlight')
---   r-cr: Reemplazo -> barra horizontal 20%, usa grupo 'Cursor'
 vim.opt.guicursor = table.concat({
   "n-v-c:block-Cursor-blinkwait300-blinkon200-blinkoff150",
   "i-ci:ver25-Cursor-blinkwait300-blinkon200-blinkoff150",
@@ -56,8 +53,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 -- >>> FIN DE LA SECCIÓN DEL CURSOR <<<
 
--- No se usa guifont en terminal remota; las fuentes se configuran en Windows Terminal
+-- >>> FUENTE PARA NEOVIDE <<<
+if vim.g.neovide then
+  vim.opt.guifont = "Hack Nerd Font:h14" -- ← CAMBIA esto por la fuente exacta que tengas instalada
+end
 
--- Forzar fondo transparente y corregir colores para evitar fondo negro
+-- >>> FONDO TRANSPARENTE <<<
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
