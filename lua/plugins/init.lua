@@ -296,15 +296,37 @@ require("lazy").setup({
           topdelete    = { text = "🗑️" },  -- Eliminada desde el inicio del archivo
           changedelete = { text = "✂️" },   -- Línea modificada y borrada
           untracked    = { text = "🔍" },   -- Línea no rastreada
-          
+
         },
           signcolumn = true, -- Mostrar columna de signos
         },
       },
+
+      -- -- Plugin 10: Guías de indentación
+{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = function()
+  -- Define los highlights antes de configurar el plugin
+  vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#444444" }) -- Color gris oscuro para las guías
+  vim.api.nvim_set_hl(0, "IndentBlanklineContextChar", { fg = "#FF5555" }) -- Color rojo para el bloque actual
+  return {
+    indent = {
+      char = "│", -- Usa un carácter más estilizado
+      highlight = "IndentBlanklineChar", -- Resalta las guías con un color
+    },
+    scope = {
+      enabled = true, -- Habilita el resaltado del bloque actual
+      show_start = true, -- Muestra una línea al inicio del bloque
+      show_end = true, -- Muestra una línea al final del bloque
+      highlight = "IndentBlanklineContextChar", -- Color diferente para el bloque actual
+    },
+    exclude = {
+      filetypes = { "help", "NvimTree", "markdown" }, -- No mostrar en estos tipos de archivo
+    },
+  }
+end },
+
     {
       'nvim-lua/plenary.nvim',
       lazy = true,
     },
   },
 })
-

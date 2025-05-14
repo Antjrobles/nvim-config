@@ -14,6 +14,10 @@ vim.opt.incsearch = true -- Resalta coincidencias mientras se escribe
 vim.opt.hlsearch = true -- Resalta todas las coincidencias de búsqueda
 vim.opt.splitbelow = true -- Abre nuevas ventanas en la parte inferior
 
+-- Habilitar líneas guía de indentación
+vim.opt.colorcolumn = "120" -- Marca la columna 80 para límite visual
+
+
 
 
 vim.filetype.add({ extension = { md = "markdown" } })
@@ -55,7 +59,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 -- >>> FUENTE PARA NEOVIDE <<<
 if vim.g.neovide then
-  vim.opt.guifont = "Hack Nerd Font:h14" -- ← CAMBIA esto por la fuente exacta que tengas instalada
+  vim.opt.guifont = "JetBrainsMono Nerd Font:h14" -- ← CAMBIA esto por la fuente exacta que tengas instalada
 end
 
 -- >>> FONDO TRANSPARENTE <<<
