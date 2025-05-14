@@ -1,4 +1,3 @@
--- ~/.config/nvim/lua/core/options.lua
 vim.opt.number = true
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
@@ -39,7 +38,7 @@ vim.opt.smoothscroll = true -- (Neovim 0.9+) Intenta hacer el scroll más suave.
 --   r-cr: Reemplazo -> barra horizontal 20%, usa grupo 'Cursor'
 vim.opt.guicursor = table.concat({
   "n-v-c:block-Cursor-blinkwait300-blinkon200-blinkoff150",
-  "i-ci:ver25-Cursor-blinkwait300-blinkon200-blinkoff150", -- Si quieres un bloque en inserción: "i-ci:block-Cursor-blinkwait300-blinkon200-blinkoff150"
+  "i-ci:ver25-Cursor-blinkwait300-blinkon200-blinkoff150",
   "r-cr:hor20-Cursor-blinkwait300-blinkon200-blinkoff150",
 }, ",")
 
@@ -47,26 +46,18 @@ vim.opt.guicursor = table.concat({
 -- Esta es la forma más robusta para asegurar que tu personalización se aplique DESPUÉS del tema.
 local cursor_augroup = vim.api.nvim_create_augroup("MyCursorSettings", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme", {
-pattern = "*", -- Para cualquier colorscheme
-group = cursor_augroup,
-callback = function()
-  -- Cursor principal (bloque)
-  vim.api.nvim_set_hl(0, "Cursor", { fg = "black", bg = "yellow", bold = true })
-
-  -- Opcional: Si quieres un resaltado específico para el cursor de inserción (si usaras un grupo diferente)
-  -- vim.api.nvim_set_hl(0, "InsertCursorHighlight", { fg = "black", bg = "cyan", bold = true })
-  -- Y entonces en guicursor para i-ci: usarías "i-ci:ver25-InsertCursorHighlight-..."
-
-  -- Opcional: Color para la línea del cursor
-  -- vim.api.nvim_set_hl(0, "CursorLine", { bg = "#282C34" }) -- Ajusta al color que quieras
-  -- Opcional: Color para la columna del cursor
-  -- vim.api.nvim_set_hl(0, "CursorColumn", { bg = "#282C34" })
-end,
-desc = "Apply custom cursor highlight after colorscheme loads"
+  pattern = "*", -- Para cualquier colorscheme
+  group = cursor_augroup,
+  callback = function()
+    -- Cursor principal (bloque)
+    vim.api.nvim_set_hl(0, "Cursor", { fg = "black", bg = "yellow", bold = true })
+  end,
+  desc = "Apply custom cursor highlight after colorscheme loads"
 })
 -- >>> FIN DE LA SECCIÓN DEL CURSOR <<<
 
--- Solo aplicar configuración de fuente si estamos en una GUI
-if vim.fn.has('gui_running') == 1 or vim.g.neovide or vim.g.goneovim then
-vim.o.guifont = "JetBrainsMono Nerd Font:h11"
-end
+-- No se usa guifont en terminal remota; las fuentes se configuran en Windows Terminal
+
+-- Forzar fondo transparente y corregir colores para evitar fondo negro
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
