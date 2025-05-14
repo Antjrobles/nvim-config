@@ -448,5 +448,26 @@ end
     require("mini.tabline").setup()
   end,
 },
+
+-- Plugin 17 indent-blankline
+-- Líneas de indentación visuales
+{
+  "lukas-reineke/indent-blankline.nvim",
+  main = "ibl",
+  config = function()
+    require("ibl").setup({
+      indent = {
+        char = "│", -- Símbolo de indentación
+        highlight = "IblIndent",
+      },
+      scope = {
+        enabled = true,
+        show_start = true,
+        show_end = true,
+        highlight = "IblScope",
+      },
+    })
+  end,
+},
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup
