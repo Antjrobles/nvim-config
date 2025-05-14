@@ -284,34 +284,23 @@ require("lazy").setup({
   },
 
 
-    -- Plugin 9: Integración con Git (gitsigns)
-    {
-      "lewis6991/gitsigns.nvim",
-      event = { "BufReadPre", "BufNewFile" },
-      config = function()
-        require("gitsigns").setup({
-          signs = {
-            add = { text = "│" },
-            change = { text = "│" },
-            delete = { text = "_" },
-            topdelete = { text = "‾" },
-            changedelete = { text = "~" },
-          },
-          numhl = true,
-          linehl = false,
-          watch_gitdir = {
-            interval = 1000,
-            follow_files = true,
-          },
-          current_line_blame = true,
-          current_line_blame_opts = {
-            virt_text = true,
-            virt_text_pos = "right_align",
-            delay = 1000,
-          },
-        })
-      end,
-    },
+       -- Plugin 9: Integración con Git (gitsigns) - Configuración MÍNIMA
+       {
+        "lewis6991/gitsigns.nvim",
+        event = { "BufReadPost", "BufNewFile" }, -- Eventos para cargar el plugin
+        opts = { -- Usar 'opts' para pasar la configuración directamente al setup del plugin
+        signs = {
+          add          = { text = "➕" },   -- Línea añadida
+          change       = { text = "📝" },   -- Línea modificada
+          delete       = { text = "❌" },   -- Línea eliminada
+          topdelete    = { text = "🗑️" },  -- Eliminada desde el inicio del archivo
+          changedelete = { text = "✂️" },   -- Línea modificada y borrada
+          untracked    = { text = "🔍" },   -- Línea no rastreada
+          
+        },
+          signcolumn = true, -- Mostrar columna de signos
+        },
+      },
     {
       'nvim-lua/plenary.nvim',
       lazy = true,
