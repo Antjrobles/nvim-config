@@ -419,7 +419,7 @@ end
 --   end,
 -- },
 
--- Codeium
+-- Plugin 15 Codeium
 {
   "Exafunction/codeium.vim",
   config = function()
@@ -427,6 +427,25 @@ end
     vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
     vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
     vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+  end,
+},
+
+-- Plugin 16 mini.vim Mejoras visuales
+{
+  "echasnovski/mini.nvim",
+  version = false, -- Usa la última versión
+  config = function()
+    -- Módulo para resaltar indentación
+    require("mini.indentscope").setup({
+      symbol = "┊", -- Línea vertical para indentación
+      options = { try_as_border = true },
+    })
+    -- Barra de estado ligera
+    require("mini.statusline").setup({
+      use_icons = true,
+    })
+    -- Mejora visual de las pestañas
+    require("mini.tabline").setup()
   end,
 },
   }, -- Fin de la tabla spec
