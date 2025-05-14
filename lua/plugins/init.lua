@@ -399,6 +399,16 @@ require("lazy").setup({
     ------------------------------------------------------------------------------------
     -- FIN DE NUEVOS PLUGINS -----------------------------------------------------------
     ------------------------------------------------------------------------------------
-
+    -- Plugin 13  Minimap al estilo VSCode
+{ "wfxr/minimap.vim",
+config = function()
+  -- Configuraciones básicas del minimap
+  vim.g.minimap_width = 10 -- Ancho del minimap
+  vim.g.minimap_auto_start = 1 -- Iniciar automáticamente al abrir un archivo
+  vim.g.minimap_auto_start_win_enter = 1 -- Mostrar al entrar en una ventana
+  -- Keymap para alternar el minimap
+  vim.keymap.set("n", "<Leader>m", ":MinimapToggle<CR>", { noremap = true, silent = true, desc = "Toggle Minimap" })
+end
+},
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup

@@ -48,6 +48,11 @@
 - Espacio + .: Abre preview del MD a la derecha
 - Espaci + ,,: Cierra preview del MD
 
+## MiniMap
+
+- Espacio + m: Abre o cierra el MiniMap
+
+
 ## Notas
 
 - `<leader>` está configurado como la tecla Espacio.
