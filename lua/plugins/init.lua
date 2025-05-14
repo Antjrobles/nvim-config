@@ -188,54 +188,102 @@ require("lazy").setup({
         vim.keymap.set("n", "<leader>,,", "<cmd>Markview splitClose<cr>", { noremap = true, silent = false, desc = "Markview: Close Split Preview" })
       end,
     },
-         -- Plugin 8: Autocompletado con nvim-cmp
+
+    -- Plugin 8: Integración con LSP (nvim-lspconfig)
     {
-      "hrsh7th/nvim-cmp",
-      event = "InsertEnter",
-      dependencies = {
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-        "L3MON4D3/LuaSnip",
-        "saadparwaiz1/cmp_luasnip",
-        "neovim/nvim-lspconfig",
-      },
+      "neovim/nvim-lspconfig",
+      event = { "BufReadPre", "BufNewFile" },
       config = function()
-        local cmp = require("cmp")
         local lspconfig = require("lspconfig")
-        cmp.setup({
-          snippet = {
-            expand = function(args)
-              require("luasnip").lsp_expand(args.body)
-            end,
-          },
-          mapping = {}, -- Dejo los mapeos vacíos para que configures tú los accesos directos
-          sources = cmp.config.sources({
-            { name = "nvim_lsp", priority = 1000 }, -- Priorizar LSP para TSX
-            { name = "luasnip", priority = 750 },
-          }, {
-            { name = "buffer", priority = 500 },
-            { name = "path", priority = 250 },
-          }),
-          formatting = {
-            format = function(entry, vim_item)
-              vim_item.menu = ({
-                nvim_lsp = "[LSP]",
-                luasnip = "[Snippet]",
-                buffer = "[Buffer]",
-                path = "[Path]",
-              })[entry.source.name]
-              return vim_item
-            end,
-          },
-        })
-        -- Configurar TypeScript LSP con ts_ls
+
+        -- TypeScript/JavaScript LSP moderno
+        lspconfig.tsserver = nil -- asegúrate de limpiarlo si ya existe
         lspconfig.ts_ls.setup({
-          filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript" },
+          filetypes = {
+            "javascript", "javascriptreact",
+            "typescript", "typescriptreact", "tsx",
+          },
+          cmd = { "typescript-language-server", "--stdio" },
           root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", ".git"),
+          single_file_support = false,
+        })
+
+        -- Python
+        lspconfig.pyright.setup({})
+
+        -- Lua
+        lspconfig.lua_ls.setup({
+          settings = {
+            Lua = {
+              diagnostics = { globals = { "vim" } },
+              workspace = { checkThirdParty = false },
+            },
+          },
         })
       end,
     },
+
+     -- Autocompletion engine
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      -- LSP source for nvim-cmp
+      "hrsh7th/cmp-nvim-lsp",
+
+      -- Buffer completions
+      "hrsh7th/cmp-buffer",
+
+      -- Path completions
+      "hrsh7th/cmp-path",
+
+      -- Command-line completions
+      "hrsh7th/cmp-cmdline",
+
+      -- Snippet engine
+      "L3MON4D3/LuaSnip",
+
+      -- Snippet completions
+      "saadparwaiz1/cmp_luasnip",
+    },
+    config = function()
+      local cmp = require("cmp")
+      local luasnip = require("luasnip")
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ["<Tab>"] = cmp.mapping.select_next_item(),
+          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<C-Space>"] = cmp.mapping.complete(),
+        }),
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+        }, {
+          { name = "buffer" },
+          { name = "path" },
+        }),
+      })
+
+      -- Required for correct capabilities
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      -- Override default LSP capabilities (include this in your lspconfig setup)
+      require("lspconfig").ts_ls.setup({
+        capabilities = capabilities,
+        cmd = { "typescript-language-server", "--stdio" },
+        root_dir = require("lspconfig").util.root_pattern("package.json", "tsconfig.json", ".git"),
+        filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "tsx" },
+      })
+    end,
+  },
+
+
     -- Plugin 9: Integración con Git (gitsigns)
     {
       "lewis6991/gitsigns.nvim",
