@@ -396,9 +396,7 @@ require("lazy").setup({
         })
       end,
     },
-    ------------------------------------------------------------------------------------
-    -- FIN DE NUEVOS PLUGINS -----------------------------------------------------------
-    ------------------------------------------------------------------------------------
+
     -- Plugin 13  Minimap al estilo VSCode
 { "wfxr/minimap.vim",
 config = function()
@@ -409,6 +407,27 @@ config = function()
   -- Keymap para alternar el minimap
   vim.keymap.set("n", "<Leader>m", ":MinimapToggle<CR>", { noremap = true, silent = true, desc = "Toggle Minimap" })
 end
+},
+
+-- Plugin 14 Copilot
+-- {
+--   "github/copilot.vim",
+--   config = function()
+--     -- Configuración opcional
+--     vim.g.copilot_no_tab_map = true -- Desactiva el mapeo por defecto de Tab
+--     vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+--   end,
+-- },
+
+-- Codeium
+{
+  "Exafunction/codeium.vim",
+  config = function()
+    -- Configuración opcional
+    vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+    vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+    vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+  end,
 },
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup

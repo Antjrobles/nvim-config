@@ -9,6 +9,9 @@
 
 - Espacio + e: Abrir/cerrar explorador
 - u: Sube un nivel de carpetas
+
+## Copilot
+- Ctrl + j: Aceptar sugerencia
  
 ## nvim-telescope (Búsqueda y navegación)
 
