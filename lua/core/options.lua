@@ -12,8 +12,7 @@ vim.opt.ignorecase = true -- Ignora mayúsculas/minúsculas al buscar
 vim.opt.smartcase = true -- Ignora mayúsculas/minúsculas al buscar, pero si hay mayúsculas, las considera
 vim.opt.incsearch = true -- Resalta coincidencias mientras se escribe
 vim.opt.hlsearch = true -- Resalta todas las coincidencias de búsqueda
-vim.opt.splitbelow = true -- Abre nuevas ventanas en la parte inferior
-
+vim.opt.splitright = true -- Abre splits a la derecha
 -- Habilitar líneas guía de indentación
 vim.opt.colorcolumn = "120" -- Marca la columna 80 para límite visual
 

@@ -72,7 +72,7 @@ require("lazy").setup({
               },
             },
             filters = {
-              dotfiles = true,
+              dotfiles = false,
             },
             -- Restaurar mapeos predeterminados y añadir solo 'u'
             on_attach = function(bufnr)
@@ -508,6 +508,26 @@ end
         treesitter = true, -- Usa Treesitter para mejor precisión
       })
     end,
+  },
+    -- Plugin 20 bufferline
+  {
+   "akinsho/bufferline.nvim",
+  version = "*", -- Usa la última versión estable
+  dependencies = { "nvim-tree/nvim-web-devicons" }, -- Para íconos (opcional)
+  config = function()
+    require("bufferline").setup {
+      options = {
+        mode = "buffers", -- Mostrar buffers (en lugar de pestañas)
+        numbers = "ordinal", -- Mostrar números ordinales en los buffers
+        diagnostics = "nvim_lsp", -- Integración con diagnósticos LSP
+        separator_style = "thick", -- Estilo de separadores (puedes cambiar a "thin", "thick", etc.)
+        show_buffer_close_icons = true, -- Mostrar ícono para cerrar buffers
+        offsets = {
+          { filetype = "NvimTree", text = "File Explorer", text_align = "center" }
+        }, -- Para evitar solapamiento con plugins como NvimTree
+      },
+    }
+  end,
   },
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup

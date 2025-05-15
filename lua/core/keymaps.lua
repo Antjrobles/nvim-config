@@ -7,17 +7,16 @@ local opts = { noremap = true, silent = true }
 map("i", "jk", "<ESC>", opts)
 map("i", "kj", "<ESC>", opts)
 
--- Guardar archivo: <Leader>w (Espacio + w)
-map("n", "<Leader>w", ":w<CR>", { desc = "Guardar archivo" })
+-- GUARDAR Y SALIR
+map("n", "<Leader>w", ":w<CR>", { desc = "Guardar archivo" }) -- Guardar archivo (Espacio + w)
+map("n", "<Leader>wq", ":wq<CR>", { desc = "Guardar y Salir" })  -- Guardar y Salir (Espacio + w + q)
+map("n", "<Leader>q", ":q!<CR>", { desc = "Salir sin guardar" }) -- Salir sin guardar
 
--- Guardar y salir: <Leader>wq (Espacio + w + q)
-map("n", "<Leader>wq", ":wq<CR>", { desc = "Guardar y Salir" })
+-- BUFFERS
+map("n", "<Tab>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
+map("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
+map("n", "<leader>bd", ":bd<CR>", { noremap = true, silent = true, desc = "Cerrar buffer actual" })
 
--- Salir sin guardar: <Leader>q (Espacio + q)
-map("n", "<Leader>q", ":q!<CR>", { desc = "Salir sin guardar" })
-
--- Cerrar el buffer (archivo) actual: <Leader>c (Espacio + c)
-map("n", "<Leader>c", ":bdelete<CR>", { desc = "Cerrar buffer actual" })
 
 -- Navegación entre ventanas divididas (splits)
 map("n", "<C-h>", "<C-w>h", { desc = "Mover a ventana izquierda" })
@@ -32,3 +31,5 @@ map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Mover línea(s) arriba" })
 -- Abrir/cerrar explorador de archivos: <Leader>e (Espacio + e)
 map("n", "<Leader>e", ":NvimTreeToggle<CR>", { desc = "Abrir/cerrar explorador de archivos" })
 
+-- Abrir ventana a la derecha
+map("n", "<Leader>v", ":vsplit<CR>", {desc = "Abrir/cerrar ventana vertical a la derecha"})
