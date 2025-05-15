@@ -510,24 +510,34 @@ end
     end,
   },
     -- Plugin 20 bufferline
-  {
-   "akinsho/bufferline.nvim",
-  version = "*", -- Usa la última versión estable
-  dependencies = { "nvim-tree/nvim-web-devicons" }, -- Para íconos (opcional)
+    {
+  "akinsho/bufferline.nvim",
+  version = "*",
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+  },
+  event = "VeryLazy",
   config = function()
     require("bufferline").setup {
       options = {
-        mode = "buffers", -- Mostrar buffers (en lugar de pestañas)
-        numbers = "ordinal", -- Mostrar números ordinales en los buffers
-        diagnostics = "nvim_lsp", -- Integración con diagnósticos LSP
-        separator_style = "thick", -- Estilo de separadores (puedes cambiar a "thin", "thick", etc.)
-        show_buffer_close_icons = true, -- Mostrar ícono para cerrar buffers
+        mode = "buffers",
+        diagnostics = "nvim_lsp",
         offsets = {
-          { filetype = "NvimTree", text = "File Explorer", text_align = "center" }
-        }, -- Para evitar solapamiento con plugins como NvimTree
+          {
+            filetype = "NvimTree",
+            text = "File Explorer",
+            highlight = "Directory",
+            separator = true,
+          },
+        },
       },
     }
+
+    -- Keymaps para moverte entre buffers
+    vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Siguiente buffer" })
+    vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Anterior buffer" })
   end,
-  },
+},
+    -- Plugin 21
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup
