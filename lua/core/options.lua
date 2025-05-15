@@ -71,5 +71,3 @@ vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
 vim.opt.wildmenu = true            -- Habilita menú de autocompletado en la línea de comandos
 vim.opt.wrap = false               -- Deshabilita el ajuste automático de líneas
-vim.opt.writemode = "exclude"     -- Excluye ciertas palabras en corrección ortográfica
-vim.opt.writelang = "es,en"       -- Idiomas para corrección ortográfica (si spell = true)

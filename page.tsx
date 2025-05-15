@@ -1,4 +1,3 @@
-// app/page.tsx
 import React from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
@@ -26,7 +25,3 @@ export default function HomePage() {
         </div>
     );
 }
-
-
-// HACK: Solucion temporal
-// TODO: Revisar si se puede mejorar
