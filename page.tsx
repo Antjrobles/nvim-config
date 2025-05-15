@@ -26,3 +26,7 @@ export default function HomePage() {
         </div>
     );
 }
+
+
+// HACK: Solucion temporal
+// TODO: Revisar si se puede mejorar

@@ -640,5 +640,23 @@ require("lazy").setup({
         })
       end,
     },
+    -- Plugin 22 Todo Comments
+    {
+      "folke/todo-comments.nvim",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("todo-comments").setup({
+          signs = true, -- Mostrar signos en la columna de signos
+          keywords = {
+            FIX = { icon = " ", color = "error" }, -- Errores
+            TODO = { icon = " ", color = "info" }, -- Tareas pendientes
+            HACK = { icon = " ", color = "warning" }, -- Hacks
+            WARN = { icon = " ", color = "warning" }, -- Advertencias
+            PERF = { icon = " ", color = "hint" }, -- Mejoras de rendimiento
+            NOTE = { icon = " ", color = "hint" }, -- Notas
+          },
+        })
+      end,
+    },
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup

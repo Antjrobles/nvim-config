@@ -15,6 +15,8 @@ vim.opt.hlsearch = true -- Resalta todas las coincidencias de búsqueda
 vim.opt.splitright = true -- Abre splits a la derecha
 -- Habilitar líneas guía de indentación
 vim.opt.colorcolumn = "120" -- Marca la columna 80 para límite visual
+vim.opt.signcolumn = "yes" -- Siempre muestra la columna de signos
+vim.opt.mouse = "a" -- Habilita el mouse en todas las modalidades
 
 
 

@@ -33,3 +33,10 @@ map("n", "<Leader>e", ":NvimTreeToggle<CR>", { desc = "Abrir/cerrar explorador d
 
 -- Abrir ventana a la derecha
 map("n", "<Leader>v", ":vsplit<CR>", {desc = "Abrir/cerrar ventana vertical a la derecha"})
+
+
+-- Como hacer los comentarios con TODO-Comments:
+-- TODO: Cambiar el color de los comentarios TODO
+-- HACK: Cambiar el color de los comentarios HACK
+-- FIX: Cambiar el color de los comentarios FIX
+-- WARN: Cambiar el color de los comentarios WARN
