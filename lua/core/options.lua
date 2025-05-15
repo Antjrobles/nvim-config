@@ -5,7 +5,6 @@ vim.opt.tabstop = 4
 vim.opt.relativenumber = false
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
-vim.opt.wrap = false
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8 -- Mantiene el cursor alejado de los bordes
 vim.opt.ignorecase = true -- Ignora mayúsculas/minúsculas al buscar
@@ -66,3 +65,11 @@ end
 -- >>> FONDO TRANSPARENTE <<<
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
+
+
+
+vim.opt.wildmenu = true            -- Habilita menú de autocompletado en la línea de comandos
+vim.opt.wrap = false               -- Deshabilita el ajuste automático de líneas
+vim.opt.writemode = "exclude"     -- Excluye ciertas palabras en corrección ortográfica
+vim.opt.writelang = "es,en"       -- Idiomas para corrección ortográfica (si spell = true)
