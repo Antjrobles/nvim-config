@@ -624,6 +624,14 @@ require("lazy").setup({
         require("conform").setup({
           formatters_by_ft = {
             lua = { "stylua" }, -- Usa stylua para formatear archivos Lua
+            json = { "prettier" }, -- Usa prettier para formatear archivos JSON
+            yaml = { "prettier" }, -- Usa prettier para formatear archivos YAML
+            markdown = { "prettier" }, -- Usa prettier para formatear archivos Markdown
+            html = { "prettier" }, -- Usa prettier para formatear archivos HTML
+            css = { "prettier" }, -- Usa prettier para formatear archivos CSS
+            tsx = { "prettier" }, -- Usa prettier para formatear archivos TSX
+            javascript = { "prettier" }, -- Usa prettier para formatear archivos JavaScript
+            typescript = { "prettier" }, -- Usa prettier para formatear archivos TypeScript
           },
           format_on_save = {
             timeout_ms = 500, -- Tiempo máximo para formatear

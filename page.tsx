@@ -8,10 +8,10 @@ import Testimonials from '@/components/Testimonials';
 import Pricing from '@/components/Pricing';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
-       
- 
+
+
 export default function HomePage() {
-    return (                                         
+    return (
         <div className="min-h-screen">
             <Header />
             <main>
