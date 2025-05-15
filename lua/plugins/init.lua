@@ -25,72 +25,85 @@ require("lazy").setup({
       lazy = false,
       priority = 1000,
       config = function()
-        require("ayu").setup({ mirage = false, overrides = { Normal = { bg = "none" } } })
-        vim.cmd.colorscheme "ayu"
+        require("ayu").setup({
+          mirage = false,
+          overrides = { Normal = { bg = "none" } },
+        })
+        vim.cmd.colorscheme("ayu")
       end,
     },
-       -- Plugin 2: Explorador de archivos
-       {
-        "nvim-tree/nvim-tree.lua",
-        cmd = { "NvimTreeToggle", "NvimTreeOpen" },
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = function()
-          require("nvim-tree").setup({
-            view = {
-              width = 30,
-              side = "left",
-            },
-            renderer = {
-              group_empty = true,
-              highlight_git = true,
-              highlight_opened_files = "icon",
-              highlight_modified = "icon",
-              icons = {
-                show = {
-                  folder_arrow = true,
+    -- Plugin 2: Explorador de archivos
+    {
+      "nvim-tree/nvim-tree.lua",
+      cmd = { "NvimTreeToggle", "NvimTreeOpen" },
+      dependencies = { "nvim-tree/nvim-web-devicons" },
+      config = function()
+        require("nvim-tree").setup({
+          view = {
+            width = 30,
+            side = "left",
+          },
+          renderer = {
+            group_empty = true,
+            highlight_git = true,
+            highlight_opened_files = "icon",
+            highlight_modified = "icon",
+            icons = {
+              show = {
+                folder_arrow = true,
+              },
+              glyphs = {
+                default = "󰈙",
+                symlink = "󰌽",
+                folder = {
+                  default = "",
+                  open = "",
+                  empty = "",
+                  empty_open = "",
+                  symlink = "",
                 },
-                glyphs = {
-                  default = "󰈙",
-                  symlink = "󰌽",
-                  folder = {
-                    default = "",
-                    open = "",
-                    empty = "",
-                    empty_open = "",
-                    symlink = "",
-                  },
-                  git = {
-                    unstaged = "✗",
-                    staged = "✓",
-                    unmerged = "",
-                    renamed = "➜",
-                    untracked = "★",
-                    deleted = "",
-                    ignored = "◌",
-                  },
+                git = {
+                  unstaged = "✗",
+                  staged = "✓",
+                  unmerged = "",
+                  renamed = "➜",
+                  untracked = "★",
+                  deleted = "",
+                  ignored = "◌",
                 },
               },
             },
-            filters = {
-              dotfiles = false,
-            },
-            -- Restaurar mapeos predeterminados y añadir solo 'u'
-            on_attach = function(bufnr)
-              local api = require("nvim-tree.api")
-              -- Cargar mapeos predeterminados
-              api.config.mappings.default_on_attach(bufnr)
-              -- Añadir solo el mapeo personalizado para 'u'
-              vim.keymap.set("n", "u", api.tree.change_root_to_parent, { desc = "nvim-tree: Dir Up", buffer = bufnr, noremap = true, silent = true, nowait = true })
-            end,
-          })
-          -- Ajustar resaltado para combinar con Ayu Dark
-          vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "#000000", fg = "#CBCCC6" }) -- Fondo negro puro, texto claro
-          vim.api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = "#334455" }) -- Línea seleccionada azul oscuro
-          vim.api.nvim_set_hl(0, "NvimTreeFolderName", { fg = "#73BFFA" }) -- Carpetas
-          vim.api.nvim_set_hl(0, "NvimTreeOpenedFolderName", { fg = "#A4B9EF" }) -- Carpetas abiertas
-          vim.api.nvim_set_hl(0, "NvimTreeFileDirty", { fg = "#FF6A6A" }) -- Archivos modificados
-        end,
-      },
+          },
+          filters = {
+            dotfiles = false,
+          },
+          -- Restaurar mapeos predeterminados y añadir solo 'u'
+          on_attach = function(bufnr)
+            local api = require("nvim-tree.api")
+            -- Cargar mapeos predeterminados
+            api.config.mappings.default_on_attach(bufnr)
+            -- Añadir solo el mapeo personalizado para 'u'
+            vim.keymap.set("n", "u", api.tree.change_root_to_parent, {
+              desc = "nvim-tree: Dir Up",
+              buffer = bufnr,
+              noremap = true,
+              silent = true,
+              nowait = true,
+            })
+          end,
+        })
+        -- Ajustar resaltado para combinar con Ayu Dark
+        vim.api.nvim_set_hl(
+          0,
+          "NvimTreeNormal",
+          { bg = "#000000", fg = "#CBCCC6" }
+        ) -- Fondo negro puro, texto claro
+        vim.api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = "#334455" }) -- Línea seleccionada azul oscuro
+        vim.api.nvim_set_hl(0, "NvimTreeFolderName", { fg = "#73BFFA" }) -- Carpetas
+        vim.api.nvim_set_hl(0, "NvimTreeOpenedFolderName", { fg = "#A4B9EF" }) -- Carpetas abiertas
+        vim.api.nvim_set_hl(0, "NvimTreeFileDirty", { fg = "#FF6A6A" }) -- Archivos modificados
+      end,
+    },
     -- Plugin 3: Barra de estado
     {
       "nvim-lualine/lualine.nvim",
@@ -121,72 +134,89 @@ require("lazy").setup({
       "nvim-tree/nvim-web-devicons",
       lazy = true,
     },
-       -- Plugin 5: Resaltado de sintaxis
-       {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        event = "BufReadPre",
-        config = function()
-          require("nvim-treesitter.configs").setup({
-            ensure_installed = {
-              "markdown",
-              "markdown_inline",
-              "lua",
-              "vim",
-              "vimdoc",
-              -- AÑADIENDO PARSERS PARA LOS NUEVOS LENGUAJES
-              "html",
-              "css",
-              "javascript", -- Ya estaba implícito por ts_ls, pero explícito es mejor
-              "typescript", -- Ya estaba implícito por ts_ls
-              "tsx",        -- Ya estaba implícito por ts_ls
-              "json",
-              "yaml",
-              "dockerfile",
-              "bash",
-              "go",
-              "rust",
-              "python",     -- Ya lo tenías implícito por pyright
-              "php",
-              "c_sharp",    -- Para C# (dotnet)
-              "java",
-              "kotlin",
-              "swift",
-              "sql",
-            },
-            highlight = { enable = true },
-            indent = { enable = true },
-            auto_install = true,
-          })
-          -- Personalizar colores de resaltado para Ayu Dark
-          -- Markdown (para atajos.md)
-          vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", { fg = "#FF6A6A", bold = true }) -- Títulos # (rojo brillante)
-          vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", { fg = "#FF8C8C", bold = true }) -- Títulos ## (rojo más suave)
-          vim.api.nvim_set_hl(0, "@markup.list.markdown", { fg = "#A4B9EF" }) -- Viñetas (azul suave)
-          vim.api.nvim_set_hl(0, "@markup.strong.markdown", { fg = "#FFD700", bold = true }) -- Texto en negrita (amarillo dorado)
-          -- Lua (para archivos de configuración)
-          vim.api.nvim_set_hl(0, "@keyword.lua", { fg = "#FF79C6" }) -- Palabras clave (rosa brillante)
-          vim.api.nvim_set_hl(0, "@string.lua", { fg = "#BD93F9" }) -- Strings (púrpura suave)
-          vim.api.nvim_set_hl(0, "@comment.lua", { fg = "#6272A4", italic = true }) -- Comentarios (gris azulado, cursiva)
-          -- General
-          vim.api.nvim_set_hl(0, "@constant", { fg = "#FFB86C" }) -- Constantes (naranja suave)
-          vim.api.nvim_set_hl(0, "@function", { fg = "#8BE9FD" }) -- Funciones (cian brillante)
-        end,
-      },
+    -- Plugin 5: Resaltado de sintaxis
+    {
+      "nvim-treesitter/nvim-treesitter",
+      build = ":TSUpdate",
+      event = "BufReadPre",
+      config = function()
+        require("nvim-treesitter.configs").setup({
+          ensure_installed = {
+            "markdown",
+            "markdown_inline",
+            "lua",
+            "vim",
+            "vimdoc",
+            -- AÑADIENDO PARSERS PARA LOS NUEVOS LENGUAJES
+            "html",
+            "css",
+            "javascript", -- Ya estaba implícito por ts_ls, pero explícito es mejor
+            "typescript", -- Ya estaba implícito por ts_ls
+            "tsx", -- Ya estaba implícito por ts_ls
+            "json",
+            "yaml",
+            "dockerfile",
+            "bash",
+            "go",
+            "rust",
+            "python", -- Ya lo tenías implícito por pyright
+            "php",
+            "c_sharp", -- Para C# (dotnet)
+            "java",
+            "kotlin",
+            "swift",
+            "sql",
+          },
+          highlight = { enable = true },
+          indent = { enable = true },
+          auto_install = true,
+        })
+        -- Personalizar colores de resaltado para Ayu Dark
+        -- Markdown (para atajos.md)
+        vim.api.nvim_set_hl(
+          0,
+          "@markup.heading.1.markdown",
+          { fg = "#FF6A6A", bold = true }
+        ) -- Títulos # (rojo brillante)
+        vim.api.nvim_set_hl(
+          0,
+          "@markup.heading.2.markdown",
+          { fg = "#FF8C8C", bold = true }
+        ) -- Títulos ## (rojo más suave)
+        vim.api.nvim_set_hl(0, "@markup.list.markdown", { fg = "#A4B9EF" }) -- Viñetas (azul suave)
+        vim.api.nvim_set_hl(
+          0,
+          "@markup.strong.markdown",
+          { fg = "#FFD700", bold = true }
+        ) -- Texto en negrita (amarillo dorado)
+        -- Lua (para archivos de configuración)
+        vim.api.nvim_set_hl(0, "@keyword.lua", { fg = "#FF79C6" }) -- Palabras clave (rosa brillante)
+        vim.api.nvim_set_hl(0, "@string.lua", { fg = "#BD93F9" }) -- Strings (púrpura suave)
+        vim.api.nvim_set_hl(
+          0,
+          "@comment.lua",
+          { fg = "#6272A4", italic = true }
+        ) -- Comentarios (gris azulado, cursiva)
+        -- General
+        vim.api.nvim_set_hl(0, "@constant", { fg = "#FFB86C" }) -- Constantes (naranja suave)
+        vim.api.nvim_set_hl(0, "@function", { fg = "#8BE9FD" }) -- Funciones (cian brillante)
+      end,
+    },
     -- Plugin 6: nvim-Telescope
     {
       "nvim-telescope/telescope.nvim",
-      tag = '0.1.5',
-      dependencies = { 'nvim-lua/plenary.nvim' },
+      tag = "0.1.5",
+      dependencies = { "nvim-lua/plenary.nvim" },
       cmd = "Telescope",
-      keys = { { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" } },
+      keys = {
+        { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+      },
       config = function()
-        require('telescope').setup{}
-      end
+        require("telescope").setup({})
+      end,
     },
 
-
-           -- Plugin 7: Vista previa de Markdown con markview.nvim
+    -- Plugin 7: Vista previa de Markdown con markview.nvim
     {
       "OXY2DEV/markview.nvim",
       event = { "BufReadPre *.md", "BufNewFile *.md" },
@@ -203,8 +233,16 @@ require("lazy").setup({
           },
         })
         -- Mapeo de tecla corregido
-        vim.keymap.set("n", "<leader>.", "<cmd>Markview splitOpen<cr>", { noremap = true, silent = false, desc = "Markview: Open Split Preview" })
-        vim.keymap.set("n", "<leader>,,", "<cmd>Markview splitClose<cr>", { noremap = true, silent = false, desc = "Markview: Close Split Preview" })
+        vim.keymap.set("n", "<leader>.", "<cmd>Markview splitOpen<cr>", {
+          noremap = true,
+          silent = false,
+          desc = "Markview: Open Split Preview",
+        })
+        vim.keymap.set("n", "<leader>,,", "<cmd>Markview splitClose<cr>", {
+          noremap = true,
+          silent = false,
+          desc = "Markview: Close Split Preview",
+        })
       end,
     },
 
@@ -222,11 +260,18 @@ require("lazy").setup({
         lspconfig.tsserver = nil -- asegúrate de limpiarlo si ya existe
         lspconfig.ts_ls.setup({
           filetypes = {
-            "javascript", "javascriptreact",
-            "typescript", "typescriptreact", "tsx",
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact",
+            "tsx",
           },
           cmd = { "typescript-language-server", "--stdio" },
-          root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", ".git"),
+          root_dir = lspconfig.util.root_pattern(
+            "package.json",
+            "tsconfig.json",
+            ".git"
+          ),
           single_file_support = false,
         })
 
@@ -248,7 +293,7 @@ require("lazy").setup({
     --------------------------------------------------------------------------
     -- TU CONFIGURACIÓN ORIGINAL DE CMP (NO LA TOCO) -------------------------
     --------------------------------------------------------------------------
-     -- Autocompletion engine
+    -- Autocompletion engine
     {
       "hrsh7th/nvim-cmp",
       dependencies = {
@@ -285,39 +330,48 @@ require("lazy").setup({
         })
 
         -- Required for correct capabilities
-        local capabilities_original_cmp = require("cmp_nvim_lsp").default_capabilities() -- Renombrada para evitar conflicto
+        local capabilities_original_cmp =
+          require("cmp_nvim_lsp").default_capabilities() -- Renombrada para evitar conflicto
 
         -- Override default LSP capabilities (include this in your lspconfig setup)
         require("lspconfig").ts_ls.setup({ -- Esto podría estar reconfigurando ts_ls
           capabilities = capabilities_original_cmp,
           cmd = { "typescript-language-server", "--stdio" },
-          root_dir = require("lspconfig").util.root_pattern("package.json", "tsconfig.json", ".git"),
-          filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "tsx" },
+          root_dir = require("lspconfig").util.root_pattern(
+            "package.json",
+            "tsconfig.json",
+            ".git"
+          ),
+          filetypes = {
+            "typescript",
+            "typescriptreact",
+            "javascript",
+            "javascriptreact",
+            "tsx",
+          },
         })
       end,
     },
 
-
-       -- Plugin 9: Integración con Git (gitsigns) - Configuración MÍNIMA
-       {
-        "lewis6991/gitsigns.nvim",
-        event = { "BufReadPost", "BufNewFile" }, -- Eventos para cargar el plugin
-        opts = { -- Usar 'opts' para pasar la configuración directamente al setup del plugin
+    -- Plugin 9: Integración con Git (gitsigns) - Configuración MÍNIMA
+    {
+      "lewis6991/gitsigns.nvim",
+      event = { "BufReadPost", "BufNewFile" }, -- Eventos para cargar el plugin
+      opts = { -- Usar 'opts' para pasar la configuración directamente al setup del plugin
         signs = {
-          add          = { text = "➕" },   -- Línea añadida
-          change       = { text = "📝" },   -- Línea modificada
-          delete       = { text = "❌" },   -- Línea eliminada
-          topdelete    = { text = "🗑️" },  -- Eliminada desde el inicio del archivo
-          changedelete = { text = "✂️" },   -- Línea modificada y borrada
-          untracked    = { text = "🔍" },   -- Línea no rastreada
-
+          add = { text = "➕" }, -- Línea añadida
+          change = { text = "📝" }, -- Línea modificada
+          delete = { text = "❌" }, -- Línea eliminada
+          topdelete = { text = "🗑️" }, -- Eliminada desde el inicio del archivo
+          changedelete = { text = "✂️" }, -- Línea modificada y borrada
+          untracked = { text = "🔍" }, -- Línea no rastreada
         },
-          signcolumn = true, -- Mostrar columna de signos
-        },
+        signcolumn = true, -- Mostrar columna de signos
       },
+    },
 
     {
-      'nvim-lua/plenary.nvim',
+      "nvim-lua/plenary.nvim",
       lazy = true,
     },
 
@@ -334,9 +388,9 @@ require("lazy").setup({
             icons = {
               package_installed = "✓",
               package_pending = "➜",
-              package_uninstalled = "✗"
-            }
-          }
+              package_uninstalled = "✗",
+            },
+          },
         })
       end,
     },
@@ -350,7 +404,8 @@ require("lazy").setup({
         -- Es CRUCIAL que la variable 'capabilities_for_mason' sea la correcta para nvim-cmp.
         -- Idealmente, se define UNA SOLA VEZ de forma global o se pasa consistentemente.
         -- Aquí, la definimos de nuevo. Esto podría ser un punto a refinar.
-        local capabilities_for_mason = require("cmp_nvim_lsp").default_capabilities()
+        local capabilities_for_mason =
+          require("cmp_nvim_lsp").default_capabilities()
 
         require("mason-lspconfig").setup({
           ensure_installed = {
@@ -358,21 +413,21 @@ require("lazy").setup({
             -- "lua_ls", -- lua_ls ya lo tienes arriba, no lo dupliques aquí a menos que quieras que Mason lo gestione
 
             -- NUEVOS LSPs que pediste:
-            "html",         -- Servidor: html (vscode-html-language-server)
-            "cssls",        -- Servidor: cssls (vscode-css-language-server)
-            "jsonls",       -- Servidor: jsonls (vscode-json-language-server)
-            "yamlls",       -- Servidor: yamlls (yaml-language-server)
-            "dockerls",     -- Servidor: dockerls (dockerfile-language-server-nodejs)
-            "bashls",       -- Servidor: bashls (bash-language-server)
+            "html", -- Servidor: html (vscode-html-language-server)
+            "cssls", -- Servidor: cssls (vscode-css-language-server)
+            "jsonls", -- Servidor: jsonls (vscode-json-language-server)
+            "yamlls", -- Servidor: yamlls (yaml-language-server)
+            "dockerls", -- Servidor: dockerls (dockerfile-language-server-nodejs)
+            "bashls", -- Servidor: bashls (bash-language-server)
 
             -- 10 más que considero útiles (elige los que necesites):
-            "rust_analyzer",-- Rust
+            "rust_analyzer", -- Rust
             "intelephense", -- PHP (necesita 'npm i -g intelephense' o licencia para todo) o phpactor
-            "marksman",     -- Markdown (alternativa/complemento a tu previewer)
-            "tailwindcss",  -- Tailwind CSS
-            "eslint",       -- Linter/formateador para JS/TS (puede configurarse como LSP)
-            "sqlls",        -- SQL Language Server
-            "jdtls",        -- Java (requiere configuración más compleja y JDK)
+            "marksman", -- Markdown (alternativa/complemento a tu previewer)
+            "tailwindcss", -- Tailwind CSS
+            "eslint", -- Linter/formateador para JS/TS (puede configurarse como LSP)
+            "sqlls", -- SQL Language Server
+            "jdtls", -- Java (requiere configuración más compleja y JDK)
             -- "kotlin_language_server", -- Kotlin
             -- "sourcekit_lsp",         -- Swift (requiere Xcode en macOS)
           },
@@ -392,152 +447,190 @@ require("lazy").setup({
             --     settings = { Lua = { diagnostics = { globals = {"vim"} } } }
             --   })
             -- end,
-          }
+          },
         })
       end,
     },
 
     -- Plugin 13  Minimap al estilo VSCode
-{ "wfxr/minimap.vim",
-config = function()
-  -- Configuraciones básicas del minimap
-  vim.g.minimap_width = 10 -- Ancho del minimap
-  vim.g.minimap_auto_start = 1 -- Iniciar automáticamente al abrir un archivo
-  vim.g.minimap_auto_start_win_enter = 1 -- Mostrar al entrar en una ventana
-  -- Keymap para alternar el minimap
-  vim.keymap.set("n", "<Leader>m", ":MinimapToggle<CR>", { noremap = true, silent = true, desc = "Toggle Minimap" })
-end
-},
+    {
+      "wfxr/minimap.vim",
+      config = function()
+        -- Configuraciones básicas del minimap
+        vim.g.minimap_width = 10 -- Ancho del minimap
+        vim.g.minimap_auto_start = 1 -- Iniciar automáticamente al abrir un archivo
+        vim.g.minimap_auto_start_win_enter = 1 -- Mostrar al entrar en una ventana
+        -- Keymap para alternar el minimap
+        vim.keymap.set(
+          "n",
+          "<Leader>m",
+          ":MinimapToggle<CR>",
+          { noremap = true, silent = true, desc = "Toggle Minimap" }
+        )
+      end,
+    },
 
--- Plugin 14 Copilot
--- {
---   "github/copilot.vim",
---   config = function()
---     -- Configuración opcional
---     vim.g.copilot_no_tab_map = true -- Desactiva el mapeo por defecto de Tab
---     vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
---   end,
--- },
+    -- Plugin 14 Copilot
+    -- {
+    --   "github/copilot.vim",
+    --   config = function()
+    --     -- Configuración opcional
+    --     vim.g.copilot_no_tab_map = true -- Desactiva el mapeo por defecto de Tab
+    --     vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+    --   end,
+    -- },
 
--- Plugin 15 Codeium
-{
-  "Exafunction/codeium.vim",
-  config = function()
-    -- Configuración opcional
-    vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
-    vim.keymap.set('i', '<C-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
-    vim.keymap.set('i', '<C-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
-  end,
-},
+    -- Plugin 15 Codeium
+    {
+      "Exafunction/codeium.vim",
+      config = function()
+        -- Configuración opcional
+        vim.keymap.set("i", "<C-g>", function()
+          return vim.fn["codeium#Accept"]()
+        end, { expr = true })
+        vim.keymap.set("i", "<C-;>", function()
+          return vim.fn["codeium#CycleCompletions"](1)
+        end, { expr = true })
+        vim.keymap.set("i", "<C-,>", function()
+          return vim.fn["codeium#CycleCompletions"](-1)
+        end, { expr = true })
+      end,
+    },
 
--- Plugin 16 mini.vim Mejoras visuales
-{
-  "echasnovski/mini.nvim",
-  version = false, -- Usa la última versión
-  config = function()
-    -- Módulo para resaltar indentación
-    require("mini.indentscope").setup({
-      symbol = "┊", -- Línea vertical para indentación
-      options = { try_as_border = true },
-    })
-    -- Barra de estado ligera
-    require("mini.statusline").setup({
-      use_icons = true,
-    })
-    -- Mejora visual de las pestañas
-    require("mini.tabline").setup()
-  end,
-},
+    -- Plugin 16 mini.vim Mejoras visuales
+    {
+      "echasnovski/mini.nvim",
+      version = false, -- Usa la última versión
+      config = function()
+        -- Módulo para resaltar indentación
+        require("mini.indentscope").setup({
+          symbol = "┊", -- Línea vertical para indentación
+          options = { try_as_border = true },
+        })
+        -- Barra de estado ligera
+        require("mini.statusline").setup({
+          use_icons = true,
+        })
+        -- Mejora visual de las pestañas
+        require("mini.tabline").setup()
+      end,
+    },
 
--- Plugin 17 indent-blankline
--- Líneas de indentación visuales
-{
-  "lukas-reineke/indent-blankline.nvim",
-  main = "ibl",
-  config = function()
-    require("ibl").setup({
-      indent = {
-        char = "│", -- Símbolo de indentación
-        highlight = "IblIndent",
-      },
-      scope = {
-        enabled = true,
-        show_start = true,
-        show_end = true,
-        highlight = "IblScope",
-      },
-    })
-  end,
-},
- -- Plugin 18
- {
-  "HiPhish/rainbow-delimiters.nvim",
-  config = function()
-    local rainbow_delimiters = require("rainbow-delimiters")
-    require("rainbow-delimiters.setup").setup({
-      strategy = {
-        [''] = rainbow_delimiters.strategy["global"],
-      },
-      query = {
-        [""] = "rainbow-delimiters",
-        lua = "rainbow-blocks",
-      },
-      highlight = {
-        "RainbowDelimiterRed",
-        "RainbowDelimiterYellow",
-        "RainbowDelimiterBlue",
-        "RainbowDelimiterOrange",
-        "RainbowDelimiterGreen",
-        "RainbowDelimiterViolet",
-        "RainbowDelimiterCyan",
-      },
-    })
-  end,
-},
-  -- Plugin 19 Twilight
-  -- Atenúa el código fuera del bloque actual
-  {
-    "folke/twilight.nvim",
-    config = function()
-      require("twilight").setup({
-        dimming = {
-          alpha = 0.80, -- Nivel de atenuación (0 a 1)
-          inactive = true, -- Atenúa bloques inactivos
-        },
-        context = 10, -- Líneas visibles alrededor del cursor
-        treesitter = true, -- Usa Treesitter para mejor precisión
-      })
-    end,
-  },
+    -- Plugin 17 indent-blankline
+    -- Líneas de indentación visuales
+    {
+      "lukas-reineke/indent-blankline.nvim",
+      main = "ibl",
+      config = function()
+        require("ibl").setup({
+          indent = {
+            char = "│", -- Símbolo de indentación
+            highlight = "IblIndent",
+          },
+          scope = {
+            enabled = true,
+            show_start = true,
+            show_end = true,
+            highlight = "IblScope",
+          },
+        })
+      end,
+    },
+    -- Plugin 18
+    {
+      "HiPhish/rainbow-delimiters.nvim",
+      config = function()
+        local rainbow_delimiters = require("rainbow-delimiters")
+        require("rainbow-delimiters.setup").setup({
+          strategy = {
+            [""] = rainbow_delimiters.strategy["global"],
+          },
+          query = {
+            [""] = "rainbow-delimiters",
+            lua = "rainbow-blocks",
+          },
+          highlight = {
+            "RainbowDelimiterRed",
+            "RainbowDelimiterYellow",
+            "RainbowDelimiterBlue",
+            "RainbowDelimiterOrange",
+            "RainbowDelimiterGreen",
+            "RainbowDelimiterViolet",
+            "RainbowDelimiterCyan",
+          },
+        })
+      end,
+    },
+    -- Plugin 19 Twilight
+    -- Atenúa el código fuera del bloque actual
+    {
+      "folke/twilight.nvim",
+      config = function()
+        require("twilight").setup({
+          dimming = {
+            alpha = 0.80, -- Nivel de atenuación (0 a 1)
+            inactive = true, -- Atenúa bloques inactivos
+          },
+          context = 10, -- Líneas visibles alrededor del cursor
+          treesitter = true, -- Usa Treesitter para mejor precisión
+        })
+      end,
+    },
     -- Plugin 20 bufferline
     {
-  "akinsho/bufferline.nvim",
-  version = "*",
-  dependencies = {
-    "nvim-tree/nvim-web-devicons",
-  },
-  event = "VeryLazy",
-  config = function()
-    require("bufferline").setup {
-      options = {
-        mode = "buffers",
-        diagnostics = "nvim_lsp",
-        offsets = {
-          {
-            filetype = "NvimTree",
-            text = "File Explorer",
-            highlight = "Directory",
-            separator = true,
-          },
-        },
+      "akinsho/bufferline.nvim",
+      version = "*",
+      dependencies = {
+        "nvim-tree/nvim-web-devicons",
       },
-    }
+      event = "VeryLazy",
+      config = function()
+        require("bufferline").setup({
+          options = {
+            mode = "buffers",
+            diagnostics = "nvim_lsp",
+            offsets = {
+              {
+                filetype = "NvimTree",
+                text = "File Explorer",
+                highlight = "Directory",
+                separator = true,
+              },
+            },
+          },
+        })
 
-    -- Keymaps para moverte entre buffers
-    vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Siguiente buffer" })
-    vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Anterior buffer" })
-  end,
-},
-    -- Plugin 21
+        -- Keymaps para moverte entre buffers
+        vim.keymap.set(
+          "n",
+          "<Tab>",
+          "<cmd>BufferLineCycleNext<CR>",
+          { desc = "Siguiente buffer" }
+        )
+        vim.keymap.set(
+          "n",
+          "<S-Tab>",
+          "<cmd>BufferLineCyclePrev<CR>",
+          { desc = "Anterior buffer" }
+        )
+      end,
+    },
+    -- Plugin 21 Conform para formatear automático de archivos
+    {
+      "stevearc/conform.nvim",
+      event = { "BufWritePre" }, -- Para formatear automáticamente al guardar
+      cmd = { "ConformInfo" }, -- Carga el plugin solo cuando se usa este comando
+      config = function()
+        require("conform").setup({
+          formatters_by_ft = {
+            lua = { "stylua" }, -- Usa stylua para formatear archivos Lua
+          },
+          format_on_save = {
+            timeout_ms = 500, -- Tiempo máximo para formatear
+            lsp_fallback = true, -- Usa LSP como fallback si el formateador falla
+          },
+        })
+      end,
+    },
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup
