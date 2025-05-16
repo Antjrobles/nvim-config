@@ -52,5 +52,7 @@ map("n", "<Leader>gf", ":Git fetch<CR>", { desc = "Hacer diff" }) -- Hacer fetch
 map("n", "<Leader>gd", ":Git diff<CR>", { desc = "Hacer diff" }) -- Hacer diff
 map("n", "<Leader>gl", ":Git log<CR>", { desc = "Hacer log" }) -- Hacer log
 
-
-
+-- Copiar y pegar al portapapeles del sistema
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to system clipboard", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>p", '"+p', { desc = "Paste from system clipboard", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>t", ":echo 'Keymaps cargados!'<CR>", { desc = "Test Keymap", noremap = true, silent = true })

@@ -6,7 +6,7 @@ import Testimonials from '@/components/Testimonials';
 import Pricing from '@/components/Pricing';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
-
+import React from 'react';
 
 export default function HomePage() {
   return (

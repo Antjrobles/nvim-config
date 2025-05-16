@@ -41,7 +41,7 @@ vim.opt.smoothscroll = true        -- (Neovim 0.9+) Intenta hacer el scroll más
 vim.opt.softtabstop = 2            -- Número de espacios que representa un tab en edición
 vim.opt.swapfile = false           -- Deshabilita archivos de intercambio
 vim.o.timeout = true
-vim.o.timeoutlen = 1000 -- Aumentar a 1 segundo (ajusta si necesitas más)
+vim.o.timeoutlen = 500 -- Aumentar a 1 segundo (ajusta si necesitas más)
 vim.opt.tabstop = 4                -- Número de espacios que representa un tab al mostrar
 vim.opt.termguicolors = true       -- Habilita colores de 24 bits (para temas modernos)
 vim.opt.undofile = true            -- Habilita archivo de deshacer persistente
@@ -92,4 +92,25 @@ vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
 
-
+-- OSC52 para portapapeles en TTY con ajustes para evitar retrasos
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = function(lines, _)
+      require("vim.ui.clipboard.osc52").copy("+")(lines)
+    end,
+    ["*"] = function(lines, _)
+      require("vim.ui.clipboard.osc52").copy("*")(lines)
+    end,
+  },
+  -- COMENTA O ELIMINA LA SIGUIENTE SECCIÓN 'paste':
+  -- paste = {
+  --   ["+"] = function()
+  --     return require("vim.ui.clipboard.osc52").paste("+")()
+  --   end,
+  --   ["*"] = function()
+  --     return require("vim.ui.clipboard.osc52").paste("*")()
+  --   end,
+  -- },
+  cache_enabled = false, -- Deshabilita caché para evitar retrasos
+}
