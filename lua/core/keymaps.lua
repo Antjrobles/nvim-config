@@ -17,6 +17,8 @@ map("n", "<Tab>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 map("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 map("n", "<leader>bd", ":bd<CR>", { noremap = true, silent = true, desc = "Cerrar buffer actual" })
 
+-- AVANTE
+
 
 -- Navegación entre ventanas divididas (splits)
 map("n", "<C-h>", "<C-w>h", { desc = "Mover a ventana izquierda" })
@@ -56,3 +58,7 @@ map("n", "<Leader>gl", ":Git log<CR>", { desc = "Hacer log" }) -- Hacer log
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to system clipboard", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>p", '"+p', { desc = "Paste from system clipboard", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>t", ":echo 'Keymaps cargados!'<CR>", { desc = "Test Keymap", noremap = true, silent = true })
+
+
+-- MCP-HUB
+map("n", "<Leader>mc", ":MCPHub<CR>", { desc = "Abrir MCP-HUB" }) -- Abre la interfaz de MCP-HUB

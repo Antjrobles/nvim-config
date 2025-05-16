@@ -22,6 +22,15 @@
 ## Codeium
 - Ctrl + g: Aceptar sugerencia
 
+## Avante
+- Espacio + a + a: Abre Avante
+- Espacio + a + e: Edit
+- Espacio + a + r: Refresh
+- Espacio + a + c: Clear
+- Espacio + a + f: switch sidebar focus
+- Para añadir un archivo al contexto:
+  - Desde el chat @ y seleccionar file. Se abrirá un explorador de archivos y seleccionas el archivo que quieres añadir al contexto.
+
 ## Git
 - Espacio + g + g: Abre GitHub
 - Espacio + g + b: Abre GitHub en el navegador

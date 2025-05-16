@@ -91,7 +91,7 @@ return {
   -- Plugin 29: rcarriga/nvim-notify (Sistema de notificaciones)
   {
     "rcarriga/nvim-notify",
-    lazy = false, -- SE CARGA SIEMPRE
+    lazy = false,
     init = function()
       vim.notify = require("notify")
     end,
@@ -175,7 +175,7 @@ return {
 
   -- Autocomando que muestra una notificación al guardar (funciona con notify)
   {
-    "nvim-lua/plenary.nvim", -- Dependencia dummy para cargar este bloque
+    "nvim-lua/plenary.nvim",
     lazy = false,
     config = function()
       vim.api.nvim_create_autocmd("BufWritePost", {
@@ -185,43 +185,189 @@ return {
       })
     end,
   },
--- Plugin 31: gelguy/wilder.nvim (Mejorar la línea de comandos)
-{
-  "gelguy/wilder.nvim",
-  -- Eliminar event = "VeryLazy" para forzar carga temprana
-  dependencies = { "romgrk/fzy-lua-native" },
-  build = ":UpdateRemotePlugins", -- Asegurar que los plugins remotos (Python) se generen
-  config = function()
-    local status_ok, wilder = pcall(require, "wilder")
-    if not status_ok then
-      vim.notify("wilder.nvim no se cargó correctamente", vim.log.levels.ERROR)
-      return
-    end
 
-    -- Inicializar wilder con manejo de errores
-    pcall(function()
-      wilder.setup({ modes = { ":", "/", "?" } })
-      wilder.set_option("pipeline", {
-        wilder.branch(
-          wilder.cmdline_pipeline({
-            fuzzy = 1,
-            fuzzy_filter = wilder.lua_fzy_filter(), -- Fallback si fzy-lua-native falla
-          }),
-          wilder.python_search_pipeline({
-            file_pattern = ".py",
-          })
-        ),
-      })
-      wilder.set_option("renderer", wilder.popupmenu_renderer({
-        highlighter = wilder.basic_highlighter(),
-        left = { " ", wilder.popupmenu_devicons() },
-        right = { " ", wilder.popupmenu_scrollbar() },
-        highlights = {
-          accent_focused = { fg = "#ff79c6" },
-          accent_unfocused = { fg = "#bd93f9" },
+  -- Plugin 31: gelguy/wilder.nvim (Mejorar la línea de comandos)
+  {
+    "gelguy/wilder.nvim",
+    dependencies = { "romgrk/fzy-lua-native" },
+    build = ":UpdateRemotePlugins",
+    config = function()
+      local status_ok, wilder = pcall(require, "wilder")
+      if not status_ok then
+        vim.notify("wilder.nvim no se cargó correctamente", vim.log.levels.ERROR)
+        return
+      end
+      pcall(function()
+        wilder.setup({ modes = { ":", "/", "?" } })
+        wilder.set_option("pipeline", {
+          wilder.branch(
+            wilder.cmdline_pipeline({
+              fuzzy = 1,
+              fuzzy_filter = wilder.lua_fzy_filter(),
+            }),
+            wilder.python_search_pipeline({
+              file_pattern = ".py",
+            })
+          ),
+        })
+        wilder.set_option("renderer", wilder.popupmenu_renderer({
+          highlighter = wilder.basic_highlighter(),
+          left = { " ", wilder.popupmenu_devicons() },
+          right = { " ", wilder.popupmenu_scrollbar() },
+          highlights = {
+            accent_focused = { fg = "#ff79c6" },
+            accent_unfocused = { fg = "#bd93f9" },
+          },
+        }))
+      end)
+    end,
+  },
+
+  -- Plugin 32: yetone/avante.nvim (Asistente de IA)
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    version = false,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "echasnovski/mini.pick",
+      "nvim-telescope/telescope.nvim",
+      "hrsh7th/nvim-cmp",
+      "ibhagwan/fzf-lua",
+      "nvim-tree/nvim-web-devicons",
+      "zbirenbaum/copilot.lua",
+      {
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            use_absolute_path = true,
+          },
         },
-      }))
-    end)
-  end,
-},
+      },
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+    build = "make",
+    opts = {
+      provider = "mcphub",
+      behaviour = {
+        auto_suggestions = false,
+        auto_set_highlight_group = true,
+      },
+      mappings = {
+        ask = "<leader>aa",
+        edit = "<leader>ae",
+        refresh = "<leader>ar",
+        clear = "<leader>ac",
+      },
+      windows = {
+        position = "right",
+        width = 40,
+      },
+      vendors = {
+        ["mcphub"] = {
+          endpoint = "http://192.168.0.32:8823/api/v1/completions",
+          model = "mcphub-model",
+          api_key_name = "MCPHUB_API_KEY",
+          parse_curl_command = function(opts, prompt)
+            local api_key = os.getenv("MCPHUB_API_KEY")
+            if not api_key then
+              error("MCPHUB_API_KEY no está definida")
+            end
+            return {
+              method = "POST",
+              url = opts.endpoint,
+              headers = {
+                ["Content-Type"] = "application/json",
+                ["Authorization"] = "Bearer " .. api_key,
+              },
+              body = vim.fn.json_encode({
+                model = opts.model,
+                prompt = prompt,
+                max_tokens = 4096,
+                temperature = 0,
+              }),
+            }
+          end,
+        },
+      },
+    },
+    config = function(_, opts)
+      require("avante").setup(opts)
+    end,
+  },
+
+  -- Plugin 33: ravitemer/mcphub.nvim (Soporte para servidores MCP)
+  {
+    "ravitemer/mcphub.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    build = "npm install -g mcp-hub@latest",
+    config = function()
+      local status_ok, mcphub = pcall(require, "mcphub")
+      if not status_ok then
+        vim.notify("mcphub.nvim no se cargó correctamente", vim.log.levels.ERROR)
+        return
+      end
+      local config = {
+        port = 8823,
+        config = vim.fn.expand("~/.config/nvim/mcpservers.json"),
+        auto_approve = true,
+        log = {
+          level = vim.log.levels.INFO,
+          to_file = false,
+        },
+        on_ready = function()
+          vim.notify("MCP Hub está en línea en http://192.168.0.32:8823!")
+        end,
+        api = {
+          enabled = true,
+          endpoint = "/api/v1/completions",
+          models = { "mcphub-model" },
+          handler = function(prompt, config)
+            local response = require("plenary.curl").post(
+              "http://192.168.0.32:8823/api/v1/completions",
+              {
+                body = vim.fn.json_encode({
+                  prompt = prompt,
+                  model = config.model or "mcphub-model",
+                  max_tokens = config.max_tokens or 4096,
+                  temperature = config.temperature or 0,
+                }),
+                headers = {
+                  ["Content-Type"] = "application/json",
+                  ["Authorization"] = "Bearer " .. os.getenv("MCPHUB_API_KEY"),
+                },
+              }
+            )
+            local result = vim.fn.json_decode(response.body)
+            if result and result.choices and result.choices[1] and result.choices[1].text then
+              return result.choices[1].text
+            else
+              return "Error en la respuesta de MCP Hub: " .. (result and vim.inspect(result) or "Sin datos")
+            end
+          end,
+        },
+      }
+      local success, err = pcall(mcphub.setup, config)
+      if not success then
+        vim.notify("Error al configurar mcphub.nvim: " .. tostring(err), vim.log.levels.ERROR)
+      end
+    end,
+  },
 }
