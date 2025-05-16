@@ -19,6 +19,9 @@ require("lazy").setup({
   ui = { border = "rounded" },
   checker = { enabled = false },
   spec = {
+    -- Incluir plugins adicionales desde extra.lua
+    { import = "plugins.more_plugins" },
+
     -- Plugin 1: neovim-ayu (Tema de colores personalizable)
     {
       "Shatur/neovim-ayu",

@@ -40,3 +40,10 @@ map("n", "<Leader>v", ":vsplit<CR>", {desc = "Abrir/cerrar ventana vertical a la
 -- HACK: Cambiar el color de los comentarios HACK
 -- FIX: Cambiar el color de los comentarios FIX
 -- WARN: Cambiar el color de los comentarios WARN
+
+-- Git
+map("n", "<Leader>gg", ":Git<CR>", { desc = "Abrir Git" }) -- Abre la interfaz de Git
+map("n", "<Leader>gs", ":Git status<CR>", { desc = "Hacer commit" }) -- Hacer status
+map("n", "<Leader>ga", ":Git add .<CR>", { desc = "Hacer diff" }) -- Hacer add
+map("n", "<Leader>gc", ":Git commit<CR>", { desc = "Hacer commit" }) -- Hacer commit
+map("n", "<Leader>gp", ":Git push<CR>", { desc = "Hacer push" }) -- Hacer push
