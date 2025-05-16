@@ -34,6 +34,14 @@
 - Espacio + g + d: Git diff
 - Espacio + g + l: Git log
 
+## Comentarios. Linea actual y bloque
+- En modo normal:
+  - En la línea actual: gcc
+
+- En modo visual(v):
+  - Seleccionar bloque con las flechas arriba y abajo:
+    - Bloque: gc
+    - Para descomentar: gc pero situando el cursor encima del bloque y debajo de la línea que se quiere descomentar
 
 ## nvim-telescope (Búsqueda y navegación)
 - Espacio + f + f: Buscar archivos
