@@ -309,7 +309,7 @@ require("lazy").setup({
             ["<S-Tab>"] = cmp.mapping.select_prev_item(),
             ["<CR>"] = cmp.mapping.confirm({ select = true }),
             ["<C-Space>"] = cmp.mapping.complete(),
-          }),
+          },
           sources = cmp.config.sources({
             { name = "nvim_lsp" },
             { name = "luasnip" },
@@ -437,7 +437,24 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 14: copilot.vim (Asistente de autocompletado basado en IA de GitHub, comentado)
+    -- Plugin 14: minimap.vim (Muestra un minimapa del código al estilo VSCode)
+    {
+      "wfxr/minimap.vim",
+      config = function()
+        -- Configuraciones básicas del minimap
+        vim.g.minimap_width = 10 -- Ancho del minimap
+        vim.g.minimap_auto_start = 1 -- Iniciar automáticamente al abrir un archivo
+        vim.g.minimap_auto_start_win_enter = 1 -- Mostrar al entrar en una ventana
+        -- Keymap para alternar el minimap
+        vim.keymap.set(
+          "n",
+          "<Leader>m",
+          ":MinimapToggle<CR>",
+          { noremap = true, silent = true, desc = "Toggle Minimap" }
+        )
+      end,
+    },
+    -- Plugin 15: copilot.vim (Asistente de autocompletado basado en IA de GitHub, comentado)
     -- {
     --   "github/copilot.vim",
     --   config = function()
@@ -446,7 +463,7 @@ require("lazy").setup({
     --     vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
     --   end,
     -- },
-    -- Plugin 15: codeium.vim (Asistente de autocompletado basado en IA)
+    -- Plugin 16: codeium.vim (Asistente de autocompletado basado en IA)
     {
       "Exafunction/codeium.vim",
       config = function()
@@ -462,7 +479,7 @@ require("lazy").setup({
         end, { expr = true })
       end,
     },
-    -- Plugin 16: mini.nvim (Colección de mejoras visuales y utilidades)
+    -- Plugin 17: mini.nvim (Colección de mejoras visuales y utilidades)
     {
       "echasnovski/mini.nvim",
       version = false, -- Usa la última versión
@@ -480,7 +497,7 @@ require("lazy").setup({
         require("mini.tabline").setup()
       end,
     },
-    -- Plugin 17: indent-blankline.nvim (Líneas visuales de indentación)
+    -- Plugin 18: indent-blankline.nvim (Líneas visuales de indentación)
     {
       "lukas-reineke/indent-blankline.nvim",
       main = "ibl",
@@ -499,7 +516,7 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 18: rainbow-delimiters.nvim (Resalta delimitadores con colores)
+    -- Plugin 19: rainbow-delimiters.nvim (Resalta delimitadores con colores)
     {
       "HiPhish/rainbow-delimiters.nvim",
       config = function()
@@ -524,7 +541,7 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 19: twilight.nvim (Atenúa el código fuera del bloque actual)
+    -- Plugin 20: twilight.nvim (Atenúa el código fuera del bloque actual)
     {
       "folke/twilight.nvim",
       config = function()
@@ -538,7 +555,7 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 20: bufferline.nvim (Barra de buffers visualmente mejorada)
+    -- Plugin 21: bufferline.nvim (Barra de buffers visualmente mejorada)
     {
       "akinsho/bufferline.nvim",
       version = "*",
@@ -577,7 +594,7 @@ require("lazy").setup({
         )
       end,
     },
-    -- Plugin 21: conform.nvim (Formateo automático de archivos)
+    -- Plugin 22: conform.nvim (Formateo automático de archivos)
     {
       "stevearc/conform.nvim",
       event = { "BufWritePre" }, -- Para formatear automáticamente al guardar
@@ -602,7 +619,7 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 22: todo-comments.nvim (Resalta y gestiona comentarios TODO, FIX, etc.)
+    -- Plugin 23: todo-comments.nvim (Resalta y gestiona comentarios TODO, FIX, etc.)
     {
       "folke/todo-comments.nvim",
       dependencies = { "nvim-lua/plenary.nvim" },
@@ -622,4 +639,3 @@ require("lazy").setup({
     },
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup
-
