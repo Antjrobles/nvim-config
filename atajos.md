@@ -19,6 +19,22 @@
 ## Copilot
 - Ctrl + j: Aceptar sugerencia
 
+## Codeium
+- Ctrl + g: Aceptar sugerencia
+
+## Git
+- Espacio + g + g: Abre GitHub
+- Espacio + g + b: Abre GitHub en el navegador
+- Espacio + g + s: Git status
+- Espacio + g + a: Git add .
+- Espacio + g + c: Git commit
+- Espacio + g + p: Git push
+- Espacio + g + p + u : Git pull
+- Espacio + g + f: Git fetch
+- Espacio + g + d: Git diff
+- Espacio + g + l: Git log
+
+
 ## nvim-telescope (Búsqueda y navegación)
 - Espacio + f + f: Buscar archivos
 - Espacio + f + g: Buscar texto en archivos

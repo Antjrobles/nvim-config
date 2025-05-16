@@ -48,3 +48,6 @@ map("n", "<Leader>ga", ":Git add .<CR>", { desc = "Hacer diff" }) -- Hacer add
 map("n", "<Leader>gc", ":Git commit<CR>", { desc = "Hacer commit" }) -- Hacer commit
 map("n", "<Leader>gp", ":Git push<CR>", { desc = "Hacer push" }) -- Hacer push
 map("n", "<Leader>gpu", ":Git pull<CR>", { desc = "Hacer pull" }) -- Hacer pull
+map("n", "<Leader>gf", ":Git fetch<CR>", { desc = "Hacer diff" }) -- Hacer fetch
+map("n", "<Leader>gd", ":Git diff<CR>", { desc = "Hacer diff" }) -- Hacer diff
+map("n", "<Leader>gl", ":Git log<CR>", { desc = "Hacer log" }) -- Hacer log
