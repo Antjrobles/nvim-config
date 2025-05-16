@@ -56,4 +56,11 @@ return {
       require("Comment").setup()
     end,
   },
+  -- Plugin 28: stevearc/dressing.nvim (Mejorar el aspecto de los menús)
+  {
+    "stevearc/dressing.nvim",
+    event = "VeryLazy",
+    opts = {},
+  }
+
 }
