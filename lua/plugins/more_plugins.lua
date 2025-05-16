@@ -185,4 +185,43 @@ return {
       })
     end,
   },
+-- Plugin 31: gelguy/wilder.nvim (Mejorar la línea de comandos)
+{
+  "gelguy/wilder.nvim",
+  -- Eliminar event = "VeryLazy" para forzar carga temprana
+  dependencies = { "romgrk/fzy-lua-native" },
+  build = ":UpdateRemotePlugins", -- Asegurar que los plugins remotos (Python) se generen
+  config = function()
+    local status_ok, wilder = pcall(require, "wilder")
+    if not status_ok then
+      vim.notify("wilder.nvim no se cargó correctamente", vim.log.levels.ERROR)
+      return
+    end
+
+    -- Inicializar wilder con manejo de errores
+    pcall(function()
+      wilder.setup({ modes = { ":", "/", "?" } })
+      wilder.set_option("pipeline", {
+        wilder.branch(
+          wilder.cmdline_pipeline({
+            fuzzy = 1,
+            fuzzy_filter = wilder.lua_fzy_filter(), -- Fallback si fzy-lua-native falla
+          }),
+          wilder.python_search_pipeline({
+            file_pattern = ".py",
+          })
+        ),
+      })
+      wilder.set_option("renderer", wilder.popupmenu_renderer({
+        highlighter = wilder.basic_highlighter(),
+        left = { " ", wilder.popupmenu_devicons() },
+        right = { " ", wilder.popupmenu_scrollbar() },
+        highlights = {
+          accent_focused = { fg = "#ff79c6" },
+          accent_unfocused = { fg = "#bd93f9" },
+        },
+      }))
+    end)
+  end,
+},
 }
