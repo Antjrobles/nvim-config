@@ -38,4 +38,22 @@ return {
       })
     end,
   },
+  -- Plugin 26: windwp/nvim-ts-autotag (Autocompletar etiquetas HTML/XML)
+  {
+    "windwp/nvim-ts-autotag",
+    event = "InsertEnter",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("nvim-ts-autotag").setup({
+        filetypes = { "html", "xml", "vue", "tsx", "jsx" },
+      })
+    end,
+  },
+  -- Plugin 27: numToStr/Comment.nvim (Comentarios)
+  {
+    "numToStr/Comment.nvim",
+    config = function()
+      require("Comment").setup()
+    end,
+  },
 }
