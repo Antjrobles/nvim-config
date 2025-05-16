@@ -47,3 +47,4 @@ map("n", "<Leader>gs", ":Git status<CR>", { desc = "Hacer commit" }) -- Hacer st
 map("n", "<Leader>ga", ":Git add .<CR>", { desc = "Hacer diff" }) -- Hacer add
 map("n", "<Leader>gc", ":Git commit<CR>", { desc = "Hacer commit" }) -- Hacer commit
 map("n", "<Leader>gp", ":Git push<CR>", { desc = "Hacer push" }) -- Hacer push
+map("n", "<Leader>gpu", ":Git pull<CR>", { desc = "Hacer pull" }) -- Hacer pull
