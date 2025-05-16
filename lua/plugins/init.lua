@@ -19,7 +19,7 @@ require("lazy").setup({
   ui = { border = "rounded" },
   checker = { enabled = false },
   spec = {
-    -- Plugin 1: Tema de colores Ayu (carga siempre)
+    -- Plugin 1: neovim-ayu (Tema de colores personalizable)
     {
       "Shatur/neovim-ayu",
       lazy = false,
@@ -32,7 +32,7 @@ require("lazy").setup({
         vim.cmd.colorscheme("ayu")
       end,
     },
-    -- Plugin 2: Explorador de archivos
+    -- Plugin 2: nvim-tree.lua (Explorador de archivos tipo sidebar)
     {
       "nvim-tree/nvim-tree.lua",
       cmd = { "NvimTreeToggle", "NvimTreeOpen" },
@@ -104,7 +104,7 @@ require("lazy").setup({
         vim.api.nvim_set_hl(0, "NvimTreeFileDirty", { fg = "#FF6A6A" }) -- Archivos modificados
       end,
     },
-    -- Plugin 3: Barra de estado
+    -- Plugin 3: nvim-lualine (Barra de estado personalizable)
     {
       "nvim-lualine/lualine.nvim",
       event = { "BufReadPost", "BufNewFile" },
@@ -128,13 +128,12 @@ require("lazy").setup({
         })
       end,
     },
-
-    -- Plugin 4: Iconos
+    -- Plugin 4: nvim-web-devicons (Iconos para plugins y explorador de archivos)
     {
       "nvim-tree/nvim-web-devicons",
       lazy = true,
     },
-    -- Plugin 5: Resaltado de sintaxis
+    -- Plugin 5: nvim-treesitter (Resaltado de sintaxis avanzado y análisis de código)
     {
       "nvim-treesitter/nvim-treesitter",
       build = ":TSUpdate",
@@ -202,7 +201,7 @@ require("lazy").setup({
         vim.api.nvim_set_hl(0, "@function", { fg = "#8BE9FD" }) -- Funciones (cian brillante)
       end,
     },
-    -- Plugin 6: nvim-Telescope
+    -- Plugin 6: telescope.nvim (Buscador fuzzy para archivos y más)
     {
       "nvim-telescope/telescope.nvim",
       tag = "0.1.5",
@@ -215,8 +214,7 @@ require("lazy").setup({
         require("telescope").setup({})
       end,
     },
-
-    -- Plugin 7: Vista previa de Markdown con markview.nvim
+    -- Plugin 7: markview.nvim (Vista previa de Markdown)
     {
       "OXY2DEV/markview.nvim",
       event = { "BufReadPre *.md", "BufNewFile *.md" },
@@ -245,11 +243,7 @@ require("lazy").setup({
         })
       end,
     },
-
-    --------------------------------------------------------------------------
-    -- TU CONFIGURACIÓN ORIGINAL DE LSP (NO LA TOCO) -------------------------
-    --------------------------------------------------------------------------
-    -- Plugin 8: Integración con LSP (nvim-lspconfig)
+    -- Plugin 8: nvim-lspconfig (Integración con servidores LSP)
     {
       "neovim/nvim-lspconfig",
       event = { "BufReadPre", "BufNewFile" },
@@ -289,11 +283,7 @@ require("lazy").setup({
         })
       end,
     },
-
-    --------------------------------------------------------------------------
-    -- TU CONFIGURACIÓN ORIGINAL DE CMP (NO LA TOCO) -------------------------
-    --------------------------------------------------------------------------
-    -- Autocompletion engine
+    -- Plugin 9: nvim-cmp (Motor de autocompletado)
     {
       "hrsh7th/nvim-cmp",
       dependencies = {
@@ -352,8 +342,7 @@ require("lazy").setup({
         })
       end,
     },
-
-    -- Plugin 9: Integración con Git (gitsigns) - Configuración MÍNIMA
+    -- Plugin 10: gitsigns.nvim (Indicadores de cambios Git en la columna de signos)
     {
       "lewis6991/gitsigns.nvim",
       event = { "BufReadPost", "BufNewFile" }, -- Eventos para cargar el plugin
@@ -369,15 +358,12 @@ require("lazy").setup({
         signcolumn = true, -- Mostrar columna de signos
       },
     },
-
+    -- Plugin 11: plenary.nvim (Biblioteca de utilidades para otros plugins)
     {
       "nvim-lua/plenary.nvim",
       lazy = true,
     },
-
-    ------------------------------------------------------------------------------------
-    -- NUEVOS PLUGINS: MASON Y MASON-LSPCONFIG PARA GESTIONAR LSPS ADICIONALES --------
-    ------------------------------------------------------------------------------------
+    -- Plugin 12: mason.nvim (Gestor de instalación de herramientas y LSP)
     {
       "williamboman/mason.nvim",
       cmd = "Mason", -- Para carga diferida hasta que se llame a :Mason
@@ -394,7 +380,7 @@ require("lazy").setup({
         })
       end,
     },
-
+    -- Plugin 13: mason-lspconfig.nvim (Puente entre Mason y LSP para instalación automática)
     {
       "williamboman/mason-lspconfig.nvim",
       dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
@@ -451,26 +437,7 @@ require("lazy").setup({
         })
       end,
     },
-
-    -- Plugin 13  Minimap al estilo VSCode
-    {
-      "wfxr/minimap.vim",
-      config = function()
-        -- Configuraciones básicas del minimap
-        vim.g.minimap_width = 10 -- Ancho del minimap
-        vim.g.minimap_auto_start = 1 -- Iniciar automáticamente al abrir un archivo
-        vim.g.minimap_auto_start_win_enter = 1 -- Mostrar al entrar en una ventana
-        -- Keymap para alternar el minimap
-        vim.keymap.set(
-          "n",
-          "<Leader>m",
-          ":MinimapToggle<CR>",
-          { noremap = true, silent = true, desc = "Toggle Minimap" }
-        )
-      end,
-    },
-
-    -- Plugin 14 Copilot
+    -- Plugin 14: copilot.vim (Asistente de autocompletado basado en IA de GitHub, comentado)
     -- {
     --   "github/copilot.vim",
     --   config = function()
@@ -479,8 +446,7 @@ require("lazy").setup({
     --     vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
     --   end,
     -- },
-
-    -- Plugin 15 Codeium
+    -- Plugin 15: codeium.vim (Asistente de autocompletado basado en IA)
     {
       "Exafunction/codeium.vim",
       config = function()
@@ -496,8 +462,7 @@ require("lazy").setup({
         end, { expr = true })
       end,
     },
-
-    -- Plugin 16 mini.vim Mejoras visuales
+    -- Plugin 16: mini.nvim (Colección de mejoras visuales y utilidades)
     {
       "echasnovski/mini.nvim",
       version = false, -- Usa la última versión
@@ -515,9 +480,7 @@ require("lazy").setup({
         require("mini.tabline").setup()
       end,
     },
-
-    -- Plugin 17 indent-blankline
-    -- Líneas de indentación visuales
+    -- Plugin 17: indent-blankline.nvim (Líneas visuales de indentación)
     {
       "lukas-reineke/indent-blankline.nvim",
       main = "ibl",
@@ -536,7 +499,7 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 18
+    -- Plugin 18: rainbow-delimiters.nvim (Resalta delimitadores con colores)
     {
       "HiPhish/rainbow-delimiters.nvim",
       config = function()
@@ -561,8 +524,7 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 19 Twilight
-    -- Atenúa el código fuera del bloque actual
+    -- Plugin 19: twilight.nvim (Atenúa el código fuera del bloque actual)
     {
       "folke/twilight.nvim",
       config = function()
@@ -576,7 +538,7 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 20 bufferline
+    -- Plugin 20: bufferline.nvim (Barra de buffers visualmente mejorada)
     {
       "akinsho/bufferline.nvim",
       version = "*",
@@ -615,7 +577,7 @@ require("lazy").setup({
         )
       end,
     },
-    -- Plugin 21 Conform para formatear automático de archivos
+    -- Plugin 21: conform.nvim (Formateo automático de archivos)
     {
       "stevearc/conform.nvim",
       event = { "BufWritePre" }, -- Para formatear automáticamente al guardar
@@ -640,7 +602,7 @@ require("lazy").setup({
         })
       end,
     },
-    -- Plugin 22 Todo Comments
+    -- Plugin 22: todo-comments.nvim (Resalta y gestiona comentarios TODO, FIX, etc.)
     {
       "folke/todo-comments.nvim",
       dependencies = { "nvim-lua/plenary.nvim" },
@@ -660,3 +622,4 @@ require("lazy").setup({
     },
   }, -- Fin de la tabla spec
 }) -- Fin de lazy.setup
+

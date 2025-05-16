@@ -9,6 +9,8 @@
 
 ## Buffers
 - :ls Muestra buffers abiertos
+- Tab: Cambia entre buffers abiertos
+- Tab + Shift: Cambia entre buffers abiertos en orden inverso
 
 ## nvim-tree (Explorador de archivos)
 - Espacio + e: Abrir/cerrar explorador
@@ -16,7 +18,7 @@
 
 ## Copilot
 - Ctrl + j: Aceptar sugerencia
- 
+
 ## nvim-telescope (Búsqueda y navegación)
 - Espacio + f + f: Buscar archivos
 - Espacio + f + g: Buscar texto en archivos
