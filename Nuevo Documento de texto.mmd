@@ -1,38 +1,91 @@
-graph TB
-    subgraph Client["🔷 Cliente (Android App)"]
-        UI["UI Components<br/>- Activities<br/>- Fragments<br/>- RecyclerViews"]
-        VM["ViewModels<br/>- FamilyVM<br/>- ChildVM<br/>- ActivityVM"]
-    end
+classDiagram
+    class User {
+        -id: uuid
+        +createFamily()
+    }
 
-    subgraph Logic["🔷 Lógica de Negocio"]
-        Repo["Repositories<br/>- FamilyRepo<br/>- ActivityRepo<br/>- AttendanceRepo"]
-        Services["Services<br/>- AuthService<br/>- SyncService"]
-    end
+    class Family {
+        -id: bigint
+        -name: string
+        -created_by: uuid
+        -created_at: timestamp
+        +addChild()
+        +addActivity()
+        +addDocument()
+    }
 
-    subgraph Data["🔷 Capa de Datos"]
-        Local["Local Storage<br/>- Room Database<br/>- SharedPreferences"]
-        Cache["Cache Layer"]
-    end
+    class Child {
+        -id: bigint
+        -family_id: bigint
+        -name: string
+        -birthdate: date
+        -grade: string
+        -allergies: string
+        -medical_notes: string
+        -photo_url: string
+        -notes: string
+        -created_at: timestamp
+        +getActivities()
+        +getAttendance()
+    }
 
-    subgraph Backend["🔷 Backend (Supabase)"]
-        API["API REST/GraphQL"]
-        Auth["Authentication<br/>- JWT Tokens<br/>- OAuth"]
-        DB["PostgreSQL Database<br/>- Families<br/>- Children<br/>- Activities<br/>- Attendance<br/>- Documents"]
-        Storage["File Storage<br/>- Documents<br/>- Photos"]
-    end
+    class Activity {
+        -id: bigint
+        -family_id: bigint
+        -child_id: bigint
+        -title: string
+        -description: string
+        -place: string
+        -teacher_name: string
+        -teacher_phone: string
+        -teacher_email: string
+        -weekday: string
+        -start_time: time
+        -end_time: time
+        -is_weekend: boolean
+        -is_match: boolean
+        -match_location: string
+        -match_opponent: string
+        -fee: numeric
+        -frequency: string
+        -active: boolean
+        -notes: string
+        -created_at: timestamp
+        +getAttendanceRecords()
+        +calculateDuration()
+    }
 
-    UI -->|Updates| VM
-    VM -->|Query/Mutation| Repo
-    Repo -->|Local CRUD| Local
-    Repo -->|Sync| Services
-    Services -->|HTTP/Realtime| API
-    API -->|Authenticate| Auth
-    API -->|Query/Insert| DB
-    API -->|Upload/Download| Storage
-    Cache -->|Cache| Local
-    Local -->|Offline| VM
+    class Attendance {
+        -id: bigint
+        -activity_id: bigint
+        -child_id: bigint
+        -attended: boolean
+        -attended_date: date
+        -notes: string
+        -created_at: timestamp
+        +markAttended()
+        +markAbsent()
+    }
 
-    style Client fill:#e3f2fd
-    style Logic fill:#f3e5f5
-    style Data fill:#e8f5e9
-    style Backend fill:#fff3e0
+    class Document {
+        -id: bigint
+        -family_id: bigint
+        -child_id: bigint
+        -activity_id: bigint
+        -doc_type: string
+        -title: string
+        -file_url: string
+        -uploaded_at: timestamp
+        +upload()
+        +download()
+    }
+
+    User "1" --> "1..*" Family: creates
+    Family "1" --> "1..*" Child: contains
+    Family "1" --> "1..*" Activity: has
+    Family "1" --> "1..*" Document: manages
+    Child "1" --> "0..*" Activity: participates_in
+    Child "1" --> "0..*" Attendance: has_record
+    Activity "1" --> "0..*" Attendance: tracks
+    Activity "1" --> "0..*" Document: has_documents
+    Child "1" --> "0..*" Document: associated_with
